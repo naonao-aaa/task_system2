@@ -27,6 +27,7 @@ Route::group(['prefix' => 'category'], function () {
     Route::get('index', 'CategoryController@index')->name('category.index');
     Route::post('store', 'CategoryController@store')->name('category.store');
     Route::post('update', 'CategoryController@update')->name('category.update');
+    Route::post('destroy', 'CategoryController@destroy')->name('category.destroy');
 });
 
 Route::group(['prefix' => 'user'], function () {
