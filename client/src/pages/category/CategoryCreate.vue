@@ -33,7 +33,7 @@ export default {
     methods: {
         register() {
             axios.post(
-                'http://127.0.0.1:8000/api/category/store',
+                '/api/category/store',
                 {
                     category_name: this.createCategoryData.category_name
                 }

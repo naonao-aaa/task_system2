@@ -14,6 +14,7 @@ Vue.use(BootstrapVue, IconsPlugin);
 Vue.config.productionTip = false;
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.baseURL = "http://127.0.0.1:8000";
 
 new Vue({
   router: router,
