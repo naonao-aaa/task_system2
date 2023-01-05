@@ -6,6 +6,7 @@ import TaskCreate from "@/pages/task/TaskCreate.vue";
 import UserIndex from "@/pages/user/UserIndex.vue";
 import UserCreate from "@/pages/user/UserCreate.vue";
 import CategoryIndex from "@/pages/category/CategoryIndex.vue";
+import CategoryCreate from "@/pages/category/CategoryCreate.vue";
 
 Vue.use(Router);
 
@@ -18,7 +19,8 @@ export default new Router({
     {path: '/user/index', component: UserIndex},
     {path: '/user/create', component: UserCreate},
 
-    {path: '/category/index', component: CategoryIndex},
+    {path: '/category/index', component: CategoryIndex, name: 'CategoryIndex'},
+    {path: '/category/create', component: CategoryCreate},
     
     {path: '/mytest', component: Test},
     {path: '*', redirect: '/'},
