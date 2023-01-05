@@ -27,5 +27,6 @@ Route::group(['prefix' => 'category'], function () {
     Route::get('index', 'CategoryController@index')->name('category.index');
 });
 
-
-Route::get('/userIndex', 'UserController@index')->name('user.index');
+Route::group(['prefix' => 'user'], function () {
+    Route::get('index', 'UserController@index')->name('user.index');
+});
