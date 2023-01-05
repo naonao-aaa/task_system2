@@ -23,4 +23,9 @@ Route::get('/mytest', function () {
     ]);
 });
 
+Route::group(['prefix' => 'category'], function () {
+    Route::get('index', 'CategoryController@index')->name('category.index');
+});
+
+
 Route::get('/userIndex', 'UserController@index')->name('user.index');
