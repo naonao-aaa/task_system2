@@ -33,22 +33,15 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
-    data() {
-        return {
-            categories: [],
-        };
+    computed: {
+        categories() {
+            return this.$store.getters.categoryList;
+        }
     },
     created() {
-        axios.get(
-            '/api/category/index'
-        )
-        .then(response => {
-            console.log(response);
-            this.categories = response.data.categories;
-        });
+        this.$store.dispatch('updateCategoryList');
     },
     methods: {
         create() {
