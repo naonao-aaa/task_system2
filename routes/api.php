@@ -32,6 +32,7 @@ Route::group(['prefix' => 'category'], function () {
 
 Route::group(['prefix' => 'status'], function () {
     Route::get('index', 'StatusController@index')->name('status.index');
+    Route::post('store', 'StatusController@store')->name('status.store');
 });
 
 Route::group(['prefix' => 'user'], function () {
