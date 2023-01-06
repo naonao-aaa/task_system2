@@ -3,47 +3,65 @@
         <div class="card-header">ユーザー管理画面</div>
 
         <div class="card-body">
-            <table class="table table-hover my-2">
-                <thead>
-                    <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">ユーザー名</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col">更新日</th>
-                    </tr>
-                </thead>
-                <tbody v-for="user in users" :key="user.id">
-                    <tr>
-                    <th>{{user.id}}</th>
-                    <td>{{user.name}}</td>
-                    <td><a class="btn btn-outline-success" href="#" role="button">編集</a></td>
-                    <td><a class="btn btn-outline-danger" href="#" role="button">削除</a></td>
-                    <td>{{user.updated_at}}</td>
-                    </tr>
-                </tbody>
-            </table>
+
+          <button v-on:click="create" class="btn btn-outline-primary">
+              新規登録
+          </button>
+
+          <table class="table table-hover my-2">
+              <thead>
+                  <tr>
+                  <th scope="col">id</th>
+                  <th scope="col">ユーザー名</th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                  <th scope="col">更新日</th>
+                  </tr>
+              </thead>
+              <tbody v-for="user in users" :key="user.id">
+                <tr>
+                  <th>{{user.id}}</th>
+                  <td>{{user.name}}</td>
+                  <td><button class="btn btn-outline-success" @click="goEdit(user.id)">編集</button></td>
+                  <td><button class="btn btn-outline-danger" @click="goDestroy(user.id)">削除</button></td>
+                  <td>{{user.updated_at}}</td>
+                </tr>
+              </tbody>
+          </table>
         </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
-    data() {
-        return {
-            users: [],
-        };
+    computed: {
+        users() {
+            return this.$store.getters.userList;
+        }
     },
     created() {
-        axios.get(
-            '/api/user/index'
-        )
-        .then(response => {
-            this.users = response.data.users;
-        });
+        this.$store.dispatch('updateUserList');
     },
+    methods: {
+        create() {
+            this.$router.push({
+                name: "UserCreate"
+            });
+        },
+        goEdit(id) {
+            this.$router.push({
+                name: "UserEdit",
+                params: { id: id}
+            })
+        },
+        goDestroy(id) {
+            this.$router.push({
+                name: "UserDestroy",
+                params: { id: id}
+            })
+        },
+    }
 }
 </script>
 

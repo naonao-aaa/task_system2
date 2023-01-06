@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import category from "./modules/category.js";
 import task from "./modules/task.js";
+import user from "./modules/user.js";
 
 Vue.use(Vuex);
 
@@ -32,6 +33,7 @@ export default new Vuex.Store({
     },
     modules: {
         category,
-        task
+        task,
+        user
     }
 });
