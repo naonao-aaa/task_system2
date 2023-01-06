@@ -37,6 +37,10 @@ Route::group(['prefix' => 'status'], function () {
     Route::post('destroy', 'StatusController@destroy')->name('status.destroy');
 });
 
+Route::group(['prefix' => 'task'], function () {
+    Route::get('index', 'TaskController@index')->name('task.index');
+});
+
 Route::group(['prefix' => 'user'], function () {
     Route::get('index', 'UserController@index')->name('user.index');
 });
