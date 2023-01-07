@@ -5,10 +5,13 @@
           <b-navbar-nav>
               <b-navbar-brand class="mx-3" :to="{ name: 'TaskIndex' }">task_system</b-navbar-brand>
               <div class="form-inline" v-show="this.$route.name === 'TaskIndex'">
-                <select class="mt-2">
-                    <option value="">カテゴリ選択</option>
+                <select class="mt-2" v-model="categoryId" v-on:change="categorySearch">
+                    <option value="0" selected>カテゴリ選択</option>
                     <option v-for="category in categories" :key="category.id" :value="category.id">{{category.name}}</option>
                 </select>
+                <!-- <button @click="test(1)">test</button> -->
+                <!-- {{categories}} -->
+                <!-- {{ categoryId }} -->
               </div>
           </b-navbar-nav>
 
@@ -32,6 +35,11 @@
 
 <script>
 export default {
+  data() {
+      return {
+          categoryId: '0',
+      };
+  },
   computed: {
       categories() {
           return this.$store.getters.categoryList;
@@ -41,6 +49,23 @@ export default {
       this.$store.dispatch('updateCategoryList');
       console.log(this.$route.name);
   },
+  methods: {
+      categorySearch() {
+          //console.log("categorySearchを実行しました");
+          this.$router.push({
+              name: "TaskIndex",
+              query: { category: this.categoryId}
+          })
+      },
+/*
+      test(id) {
+          this.$router.push({
+              name: "TaskIndex",
+              query: { test: id}
+          })
+      },
+*/
+  }
 }
 </script>
 
