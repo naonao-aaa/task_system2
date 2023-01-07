@@ -44,4 +44,5 @@ Route::group(['prefix' => 'task'], function () {
 
 Route::group(['prefix' => 'user'], function () {
     Route::get('index', 'UserController@index')->name('user.index');
+    Route::post('store', 'UserController@store')->name('user.store');
 });
