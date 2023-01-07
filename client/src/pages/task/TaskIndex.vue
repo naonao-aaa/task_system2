@@ -46,12 +46,17 @@ export default {
     computed: {
         computedTasks() {
             let getters = this.$store.getters.taskList;
+            //return this.$store.getters.taskList;
+
             console.log(this.$route.query.category);
-            if (this.$route.query.caterory !== 0) {
-                const dataId = this.$route.query.category;
+
+            if (this.$route.query.caterory !== (0 || null)) {
+                const dataId = parseInt(this.$route.query.category, 10);
+                console.log(dataId);
                 const data = getters.filter( function(a) {
                     return a.category_id == dataId;
                 })
+
                 console.log('if文の処理');
                 console.log(data);
                 getters = data;
@@ -62,6 +67,7 @@ export default {
             return getters;
         }
     },
+/*
     watch: {
         $route(to) {
             console.log(to.query.category);
@@ -81,6 +87,7 @@ export default {
             }
         }
     },
+*/
     created() {
         this.$store.dispatch('updateTaskList');
     },
