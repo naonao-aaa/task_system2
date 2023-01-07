@@ -19,7 +19,7 @@
                     <th scope="col">更新日時</th>
                     </tr>
                 </thead>
-                <tbody v-for="task in tasks" :key="task.id">
+                <tbody v-for="task in computedTasks" :key="task.id">
                 <tr @click="goShow(task.id)">
                     <td>{{task.id}}</td>
                     <td>{{task.status ? task.status.name : ''}}</td>
@@ -36,9 +36,49 @@
 
 <script>
 export default {
+/*
+    data() {
+        return {
+            tasks: [],
+        };
+    },
+*/
     computed: {
-        tasks() {
-            return this.$store.getters.taskList;
+        computedTasks() {
+            let getters = this.$store.getters.taskList;
+            console.log(this.$route.query.category);
+            if (this.$route.query.caterory !== 0) {
+                const dataId = this.$route.query.category;
+                const data = getters.filter( function(a) {
+                    return a.category_id == dataId;
+                })
+                console.log('if文の処理');
+                console.log(data);
+                getters = data;
+            } else {
+                console.log('else文の処理');
+                console.log(getters);
+            }
+            return getters;
+        }
+    },
+    watch: {
+        $route(to) {
+            console.log(to.query.category);
+            console.log(this.computedTasks);
+            console.log(to);
+            if (to.query.caterory == null) {
+                const dataId = this.$route.query.category;
+                const data = this.computedTasks.filter( function(a) {
+                    return a.category_id == dataId;
+                })
+                console.log('if文の処理');
+                console.log(data);
+                this.tasks = data;
+            } else {
+                this.tasks = this.computedTasks;
+                console.log('else文の処理');
+            }
         }
     },
     created() {
