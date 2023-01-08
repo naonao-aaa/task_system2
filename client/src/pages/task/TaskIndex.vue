@@ -42,15 +42,17 @@ export default {
 
             //console.log(this.$route.query.category);
 
-            const dataId = parseInt(this.$route.query.category, 10);
-            //console.log(dataId);
-            const data = getters.filter( function(a) {
-                return a.category_id == dataId;
-            })
-
-            console.log(data);
-
-            return (this.$route.query.category == 0 || !this.$route.query.category) ? getters : data;
+            if (this.$route.query.category == 0 || !this.$route.query.category) {
+                return getters;
+            } else {
+                const dataId = parseInt(this.$route.query.category, 10);
+                //console.log(dataId);
+                const data = getters.filter( function(a) {
+                    return a.category_id == dataId;
+                })
+                console.log(data);
+                return data;
+            }
         }
     },
     created() {
