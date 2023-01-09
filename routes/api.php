@@ -47,6 +47,7 @@ Route::group(['prefix' => 'task'], function () {
 Route::group(['prefix' => 'comment'], function () {
     Route::post('index', 'CommentController@index')->name('comment.index');
     Route::post('store', 'CommentController@store')->name('comment.store');
+    Route::post('workUserUpdate', 'CommentController@workUserUpdate')->name('comment.workUserUpdate');
 });
 
 Route::group(['prefix' => 'user'], function () {
