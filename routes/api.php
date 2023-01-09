@@ -23,6 +23,10 @@ Route::get('/mytest', function () {
     ]);
 });
 
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('login', 'AuthController@login')->name('auth.login');
+});
+
 Route::group(['prefix' => 'category'], function () {
     Route::get('index', 'CategoryController@index')->name('category.index');
     Route::post('store', 'CategoryController@store')->name('category.store');
