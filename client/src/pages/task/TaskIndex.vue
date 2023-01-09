@@ -29,6 +29,22 @@
                     <td>{{task.updated_at}}</td>
                 </tr>
                 </tbody>
+                <!--{{getPageCount}}-->
+                <VuePaginate
+                    :page-count="getPageCount"
+                    :page-range="3"
+                    :margin-pages="2"
+                    :click-handler="clickCallback"
+                    :prev-text="'＜'"
+                    :next-text="'＞'"
+                    :container-class="'pagination'"
+                    :page-class="'page-item'"
+                    :page-link-class="'page-link'"
+                    :prev-class="'page-item'"
+                    :prev-link-class="'page-link'"
+                    :next-class="'page-item'"
+                    :next-link-class="'page-link'">
+                </VuePaginate>
             </table>
         </div>
     </div>
@@ -36,15 +52,24 @@
 
 <script>
 export default {
+    data() {
+        return {
+            currentPage: 1,
+            perPage: 10,
+        };
+    },
     computed: {
         computedTasks() {
             const getters = this.$store.getters.taskList;
 
             //console.log(this.$route.query.category);
 
+            let current = this.currentPage * this.perPage;
+            let start = current - this.perPage;
+
             if ((this.$route.query.category == 0 && this.$route.query.status == 0 && this.$route.query.user == 0 && this.$route.query.searchword == '') || (!this.$route.query.category && !this.$route.query.status && !this.$route.query.user && !this.$route.query.searchword)) {
                 console.log(getters);
-                return getters;
+                return getters.slice(start, current);
             } else {
                 const categoryDataId = parseInt(this.$route.query.category, 10);
                 const statusDataId = parseInt(this.$route.query.status, 10);
@@ -61,17 +86,24 @@ export default {
                 if( searchword=='' || !searchword ) {
                     //console.log('searchwordなしの処理を通っている');
                     const finalData = tentativeData
-                    return finalData;
+                    return finalData.slice(start, current);
                 } else {
                     const finalData = tentativeData.filter( function(b) {
                         //console.log('searchwordありの処理を通っている');
                         return b.name.match(searchword);
                     })
-                    return finalData;
+                    return finalData.slice(start, current);
                 }
                 //console.log(finalData);
                 //return finalData;
             }
+        },
+        rawGettersTaskList() {
+            return this.$store.getters.taskList;
+        },
+        getPageCount() {
+            //console.log(this.computedTasks.length);
+            return Math.ceil(this.rawGettersTaskList.length / this.perPage);
         }
     },
     created() {
@@ -89,6 +121,9 @@ export default {
                 params: { id: id}
             })
         },
+        clickCallback(pageNum) {
+            this.currentPage = Number(pageNum);
+        }
     }
 }
 </script>
