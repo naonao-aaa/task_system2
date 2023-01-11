@@ -26,4 +26,17 @@ new Vue({
   router: router,
   store: store,
   render: h => h(App),
-}).$mount('#app')
+}).$mount('#app');
+
+router.beforeEach((to, from, next) => {
+  console.log('globalbeforEach');
+  if (store.getters.loginUser) {
+      next();
+  } else {
+      if (to.path === "/login") {
+          next();
+      } else {
+          next('/login');
+      }
+  }
+});

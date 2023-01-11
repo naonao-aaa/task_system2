@@ -30,7 +30,7 @@ export default new Router({
   routes: [
     {path: '/login', component: MyLogin, name: "MyLogin"},
 
-    {path: '/', component: TaskIndex, name: "TaskIndex"},
+    {path: '/task/index', component: TaskIndex, name: "TaskIndex"},
     {path: '/task/create', component: TaskCreate, name: "TaskCreate"},
     {path: '/task/show/:id', component: TaskShow, name: "TaskShow"},
     {path: '/task/edit/:id', component: TaskEdit, name: "TaskEdit"},
@@ -53,6 +53,6 @@ export default new Router({
     {path: '/status/destroy/:id', component: StatusDestroy, name: 'StatusDestroy'},
     
     {path: '/mytest', component: Test},
-    {path: '*', redirect: '/'},
+    {path: '*', redirect: '/login'},
   ]
 });
