@@ -20,6 +20,8 @@ Vue.component('VuePaginate', VuePaginate);
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.baseURL = "http://127.0.0.1:8000";
 
+store.dispatch('autoLogin');
+
 new Vue({
   router: router,
   store: store,
