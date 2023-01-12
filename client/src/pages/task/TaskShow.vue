@@ -64,7 +64,7 @@
                         <div method="POST" action="#" enctype="multipart/form-data">
                             <textarea class="form-control" rows="5" name="comment" v-model="comment"></textarea>
                             <!--{{comment}}-->
-                            <input type="hidden" name="user" v-model="user_id">
+                            <input type="hidden" name="user" v-model="loginUserId">
                             <button class="btn btn-dark mt-1" @click="commentSubmit">コメント投稿する</button>
                         </div>
 
@@ -90,7 +90,6 @@ export default {
     data() {
         return {
             comment: '',
-            user_id: 1,
             workUserId: '0',
             statusId: '0',
         };
@@ -114,6 +113,9 @@ export default {
         statuses() {
             return this.$store.getters.statusList;
         },
+        loginUserId() {
+            return this.$store.getters.loginUser.id;
+        }
     },
     created() {
         this.$store.dispatch('updateTaskList');
@@ -140,7 +142,7 @@ export default {
                 '/api/comment/store',
                 {
                     comment: this.comment,
-                    user_id: this.user_id,
+                    user_id: this.loginUserId,
                     task_id: this.task.id
                 }
             )
