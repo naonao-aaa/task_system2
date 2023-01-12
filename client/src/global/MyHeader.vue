@@ -37,7 +37,7 @@
 
             <b-nav-item-dropdown :text='loginUserName' right>
                 <b-dropdown-item href="#">個人設定</b-dropdown-item>
-                <b-dropdown-item :to="{ name: 'MyLogin' }">Logout</b-dropdown-item>
+                <b-dropdown-item @click="logout">ログアウト</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
 
@@ -84,6 +84,9 @@ export default {
           })
           .catch( err => console.log(err) )
       },
+      logout() {
+          this.$store.dispatch('logout');
+      }
 /*
       test(id) {
           this.$router.push({
