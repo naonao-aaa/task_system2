@@ -29,16 +29,19 @@ const actions = {
             }
         )
         .then(response => {
-            console.log(response);
-            const newLoginUser = response.data.user;
-            commit('updateLoginUser', newLoginUser);
+          if(response.data.status == "OK") {
+              const newLoginUser = response.data.user;
+              commit('updateLoginUser', newLoginUser);
 
-            const jsonNewLoginUser = JSON.stringify(response.data.user);
-            localStorage.setItem('loginUserInLocalStorage', jsonNewLoginUser);
+              const jsonNewLoginUser = JSON.stringify(response.data.user);
+              localStorage.setItem('loginUserInLocalStorage', jsonNewLoginUser);
 
-            router.push({
-                name: "TaskIndex"
-            });
+              router.push({
+                  name: "TaskIndex"
+              });
+          } else {
+              console.log('Failed');
+          }
         });
     },
     logout({ commit }) {
