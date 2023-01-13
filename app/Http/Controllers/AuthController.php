@@ -93,9 +93,16 @@ class AuthController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = request('updateDataId');
+
+        $user = User::find($id);
+
+        return response()->json([
+            'status' => 'OK',
+            'user'   => $user,
+        ]);
     }
 
     /**
