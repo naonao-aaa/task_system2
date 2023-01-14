@@ -51,6 +51,11 @@ const actions = {
               const newLoginErrorMessages = response.data.errorMessages;
               commit('updateLoginErrorMessages', newLoginErrorMessages);
           }
+        })
+        .catch(error => {
+            console.log(error);
+            const newLoginErrorMessages = ['メールアドレスまたはパスワードが正しくありません。'];
+            commit('updateLoginErrorMessages', newLoginErrorMessages);
         });
     },
     logout({ commit }) {
