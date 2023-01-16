@@ -63,3 +63,7 @@ Route::group(['prefix' => 'user'], function () {
     Route::post('passwordUpdate', 'UserController@passwordUpdate')->name('user.passwordUpdate');
     Route::post('destroy', 'UserController@destroy')->name('user.destroy');
 });
+
+Route::group(['prefix' => 'test'], function () {
+    Route::post('fileupload', 'TaskController@fileupload')->name('task.fileupload');
+});
