@@ -63,7 +63,8 @@ export default {
                 category: '',
                 deadline: '',
             },
-            fileInfo: ''
+            fileInfo: '',
+            taskId: ''
         };
     },
     computed: {
@@ -87,8 +88,6 @@ export default {
     },
     methods: {
         register() {
-            this.fileUpload();
-            
             axios.post(
                 '/api/task/store',
                 {
@@ -98,21 +97,39 @@ export default {
             )
             .then(response => {
                 console.log(response);
-                this.$router.push({
-                    name: "TaskIndex"
-                });
+
+                this.taskId = response.data.task.id;
+
+                if(this.fileInfo !== '') {
+                    this.fileUpload();
+                } else {
+                    this.$router.push({
+                        name: "TaskIndex"
+                    });
+                }
             });
             //this.createTaskData.task_name = '';
         },
         fileSelected(event){
-            console.log(event);
+            //console.log(event);
             this.fileInfo = event.target.files[0];
         },
         fileUpload(){
-            const formData = new FormData()
-            formData.append('file',this.fileInfo)
-            axios.post('/api/file/fileUpload',formData).then(response =>{
-                console.log(response)
+            const formData = new FormData();
+            formData.append('file',this.fileInfo);
+            
+            formData.append('taskId',this.taskId);
+            formData.append('admin_user',this.loginUserId);
+            
+            axios.post(
+                '/api/file/fileUpload',
+                formData
+            )
+            .then(response =>{
+                console.log(response);
+                this.$router.push({
+                    name: "TaskIndex"
+                });
             });
         }
     },
