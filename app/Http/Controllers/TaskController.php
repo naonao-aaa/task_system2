@@ -59,39 +59,34 @@ class TaskController extends Controller
 
     public function fileUpload(Request $request)
     {
-        //$file = $request->file('file');
-        $data = $request->all();
-        $file = $data['file'];
+        $files = request()->file('files');
 
-        //dd($file);
-        //$file_name = request()->file->getClientOriginalName();
-        //request()->file->storeAs('public/', $file_name);
+        if (!is_null($files)) {
+            foreach ($files as $file) {
+                $originalName = $file->getClientOriginalName();
 
-        if (!is_null($file)) {
+                $fileName = Str::random(30);
+                $extension = $file->extension(); //拡張子を取得する。取得した画像にextension()とすれば拡張子を取得できる。
+                $fileNameToStore = $fileName . '.' . $extension; //作成したファイル名と拡張子を付ける。
 
-            $originalName = $file->getClientOriginalName();
+                $data = $request->all();
+                $taskId = $data['taskId'];
+                $admin_user = $data['admin_user'];
 
-            $fileName = Str::random(30);
-            $extension = $file->extension(); //拡張子を取得する。取得した画像にextension()とすれば拡張子を取得できる。
-            $fileNameToStore = $fileName . '.' . $extension; //作成したファイル名と拡張子を付ける。
+                $fileInstance = File::create([          //DBに保存
+                    'task_id' => $taskId,
+                    'user_id' => $admin_user,
+                    'file_name' => $fileNameToStore,
+                    'original_name' => $originalName,
+                ]);
 
-            //$data = $request->all();
-            $taskId = $data['taskId'];
-            $admin_user = $data['admin_user'];
-
-            $fileInstance = File::create([          //DBに保存
-                'task_id' => $taskId,
-                'user_id' => $admin_user,
-                'file_name' => $fileNameToStore,
-                'original_name' => $originalName,
-            ]);
-
-            // /storage/appディレクトリの該当フォルダに保存
-            Storage::putFileAs('public/file/', $file, $fileNameToStore);
+                // /storage/appディレクトリの該当フォルダに保存
+                Storage::putFileAs('public/file/', $file, $fileNameToStore);
+            }
         }
 
         return response()->json([
-            'file' => $file,
+            'files' => $files,
         ]);
     }
 
