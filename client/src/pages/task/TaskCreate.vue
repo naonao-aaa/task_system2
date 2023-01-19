@@ -36,6 +36,12 @@
                             締切日<br>
                             <input type="date" name="deadline" v-model="createTaskData.deadline">
                             <br>
+                            ファイル<br>
+                            <input type="file" name="file" multiple v-on:change="fileSelected">
+                            <div v-for="fileInfo in filesInfo" :key="fileInfo.id">
+                                {{ fileInfo.name}}
+                            </div>
+                            <br>
                             <br>
                             <button class="btn btn-info" @click="register">登録する</button>
                         <!-- {{createTaskData}} -->
@@ -60,6 +66,8 @@ export default {
                 category: '',
                 deadline: '',
             },
+            filesInfo: [],
+            taskId: ''
         };
     },
     computed: {
@@ -92,11 +100,48 @@ export default {
             )
             .then(response => {
                 console.log(response);
+
+                this.taskId = response.data.task.id;
+
+                if(this.filesInfo.length != 0) {
+                    this.fileUpload();
+                } else {
+                    this.$router.push({
+                        name: "TaskIndex"
+                    });
+                }
+            });
+            //this.createTaskData.task_name = '';
+        },
+        fileSelected(event){
+            //console.log(event);
+            const ObjectFilesInfo = event.target.files;
+            const ArrayFilesInfo = Object.values(ObjectFilesInfo);    //オブジェクトはmap処理やforEach処理を使えないので、1度配列にする。
+            this.filesInfo = ArrayFilesInfo;
+            console.log(this.filesInfo);
+        },
+        fileUpload(){
+            const formData = new FormData();
+            
+            this.filesInfo.forEach((file, index) => {
+                formData.append(`files[${index}]`, file)        // formDataにアップロードしたい(選択した)file情報を追加していく
+            });
+            
+            formData.append('taskId',this.taskId);
+            formData.append('admin_user',this.loginUserId);
+
+            console.log(...formData.entries());
+
+            axios.post(
+                '/api/file/fileUpload',
+                formData
+            )
+            .then(response =>{
+                console.log(response);
                 this.$router.push({
                     name: "TaskIndex"
                 });
             });
-            //this.createTaskData.task_name = '';
         }
     },
 }
