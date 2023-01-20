@@ -23,6 +23,19 @@ class FileController extends Controller
         ]);
     }
 
+    public function downLoad(Request $request)
+    {
+
+        $fileId = $request->get('file_id');
+        $file = File::find($fileId);
+
+        $pathToFile = 'http://127.0.0.1:8000/storage/file/' . $file->file_name;
+        return response()->json([
+            'pathToFile' => $pathToFile,
+            'file' => $file
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
