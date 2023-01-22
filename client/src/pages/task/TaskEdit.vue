@@ -73,7 +73,11 @@
 
                         締切日<br>
                         <input type="date" name="deadline" v-model="task.deadline">
-                        <br>
+                        <ul></ul>
+
+                        ファイル<br>
+                        <input type="file" name="file" multiple v-on:change="fileSelected">
+                        <ul></ul>
                         <br>
                         <button class="btn btn-success" @click="update">更新する</button>
                     <!-- {{task}} -->
@@ -90,6 +94,8 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            filesInfo: [],
+            taskId: '',
             errors: {
                 task_name: [],
                 description: [],
@@ -118,6 +124,9 @@ export default {
                 a.id === dataId
             ));
             return data;
+        },
+        loginUserId() {
+            return this.$store.getters.loginUser.id;
         }
     },
     created() {
@@ -144,9 +153,16 @@ export default {
             )
             .then(response => {
                 console.log(response);
-                this.$router.push({
-                    name: "TaskIndex"
-                });
+                
+                this.taskId = response.data.task.id;
+
+                if(this.filesInfo.length != 0) {
+                    this.fileUpload();
+                } else {
+                    this.$router.push({
+                        name: "TaskIndex"
+                    });
+                }
             })
             .catch(error => {
                 //初期化
@@ -159,7 +175,7 @@ export default {
                 this.errors.man_hours = [];
 
                 console.log(error.response.data.errors);
-                
+
                 if(error.response.data.errors.task_name) {
                     const errorsTaskName = error.response.data.errors.task_name;
                     this.errors.task_name = errorsTaskName.map((error) => {
@@ -203,7 +219,32 @@ export default {
                     })
                 }
             });
-        }
+        },
+        fileSelected(event){
+            //console.log(event);
+            const ObjectFilesInfo = event.target.files;
+            const ArrayFilesInfo = Object.values(ObjectFilesInfo);    //オブジェクトはmap処理やforEach処理を使えないので、1度配列にする。
+            this.filesInfo = ArrayFilesInfo;
+        },
+        fileUpload(){
+            const formData = new FormData();
+            this.filesInfo.forEach((file, index) => {
+                formData.append(`files[${index}]`, file) // formDataに追加していく
+            });
+            formData.append('taskId',this.taskId);
+            formData.append('admin_user',this.loginUserId);
+            console.log(...formData.entries());
+            axios.post(
+                '/api/file/fileUpload',
+                formData
+            )
+            .then(response =>{
+                console.log(response);
+                this.$router.push({
+                    name: "TaskIndex"
+                });
+            });
+        },
     },
 }
 </script>
