@@ -37,7 +37,20 @@ class FileController extends Controller
         $fromComment = $data['fromComment'];
 
         DetailProcess::fileStore($request, $commentId, $fromComment);   //ファイル保存処理
+    }
 
+
+    public function download(Request $request)
+    {
+
+        $fileId = $request->get('file_id');
+        $file = File::find($fileId);
+
+        $pathToFile = 'http://127.0.0.1:8000/storage/file/' . $file->file_name;
+        return response()->json([
+            'pathToFile' => $pathToFile,
+            'file' => $file
+        ]);
     }
 
     /**
