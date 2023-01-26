@@ -23,7 +23,7 @@ class FileController extends Controller
         ]);
     }
 
-    public function downLoad(Request $request)
+    public function download(Request $request)
     {
 
         $fileId = $request->get('file_id');
