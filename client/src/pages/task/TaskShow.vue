@@ -72,7 +72,7 @@
                             <input type="hidden" name="user" v-model="loginUserId">
                             <input class="mt-1 mx-1" type="file" name="file" multiple v-on:change="fileSelected">
                             <br>
-                            <button class="btn btn-dark mt-1" @click="submit">コメント投稿する</button>
+                            <button class="btn btn-dark mt-1" @click="commentSubmit">コメント投稿する</button>
                         </div>
 
                         <select class="mt-2 mx-1" v-model="workUserId" v-on:change="changeWorkUser">
@@ -100,6 +100,7 @@ export default {
             workUserId: '0',
             statusId: '0',
             filesInfo: [],
+            commentId: ''
         };
     },
     computed: {
@@ -149,12 +150,6 @@ export default {
                 params: { id: id}
             })
         },
-        submit() {
-            if(this.filesInfo.length != 0) {
-                this.fileUpload();
-            }
-            this.commentSubmit();
-        },
         commentSubmit() {
             axios.post(
                 '/api/comment/store',
@@ -167,8 +162,24 @@ export default {
             .then(response => {
                 console.log(response);
                 this.comment = '';
-                this.$router.go({path: this.$router.currentRoute.path, force: true});
-            });
+
+                if(response.data.commentId) {
+                    this.commentId = response.data.commentId;
+                }
+
+                if(this.filesInfo.length != 0) {
+                    this.fileUpload(this.commentId);
+                } else {
+                    this.$router.go({path: this.$router.currentRoute.path, force: true});
+                }
+            })
+            .catch(error => {
+                if(this.filesInfo.length != 0) {
+                    this.fileUpload(this.commentId);
+                } else {
+                    console.log(error);
+                }
+            })
         },
         changeWorkUser() {
             axios.post(
@@ -211,7 +222,7 @@ export default {
             this.filesInfo = ArrayFilesInfo;
             console.log(this.filesInfo);
         },
-        fileUpload(){
+        fileUpload(commentId){
             const formData = new FormData();
 
             this.filesInfo.forEach((file, index) => {
@@ -220,6 +231,8 @@ export default {
 
             formData.append('taskId',this.task.id);
             formData.append('admin_user',this.loginUserId);
+            formData.append('commentId',commentId);
+            formData.append('fromComment',true);
 
             console.log(...formData.entries());
 
@@ -229,12 +242,12 @@ export default {
             )
             .then(response =>{
                 console.log(response);
-/*
-                this.$router.push({
-                    name: "TaskIndex"
-                });
- */
-            });
+
+                this.$router.go({path: this.$router.currentRoute.path, force: true});
+            })
+            .catch(error => {
+                console.log(error);
+            })
         },
     },
 }

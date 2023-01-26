@@ -16,7 +16,7 @@ class CommentController extends Controller
     public function index()
     {
         $id = request('task_id');
-        $comments = Comment::with(['task', 'user'])->where('task_id', $id)->get();
+        $comments = Comment::with(['task', 'user', 'files'])->where('task_id', $id)->get();
 
         return response()->json([
             'comments' => $comments,
@@ -46,6 +46,12 @@ class CommentController extends Controller
                 'task_id' => request('task_id'),
                 'user_id' => request('user_id'),
                 'text' => request('comment')
+            ]);
+
+            $commentId = $comment->id;
+
+            return response()->json([
+                'commentId' => $commentId,
             ]);
         }
     }
