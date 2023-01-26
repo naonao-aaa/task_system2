@@ -70,6 +70,8 @@
                             <textarea class="form-control" rows="5" name="comment" v-model="comment"></textarea>
                             <!--{{comment}}-->
                             <input type="hidden" name="user" v-model="loginUserId">
+                            <input class="mt-1 mx-1" type="file" name="file" multiple v-on:change="fileSelected">
+                            <br>
                             <button class="btn btn-dark mt-1" @click="commentSubmit">コメント投稿する</button>
                         </div>
 
@@ -97,6 +99,8 @@ export default {
             comment: '',
             workUserId: '0',
             statusId: '0',
+            filesInfo: [],
+            commentId: ''
         };
     },
     computed: {
@@ -158,8 +162,24 @@ export default {
             .then(response => {
                 console.log(response);
                 this.comment = '';
-                this.$router.go({path: this.$router.currentRoute.path, force: true});
-            });
+
+                if(response.data.commentId) {
+                    this.commentId = response.data.commentId;
+                }
+
+                if(this.filesInfo.length != 0) {
+                    this.fileUpload(this.commentId);
+                } else {
+                    this.$router.go({path: this.$router.currentRoute.path, force: true});
+                }
+            })
+            .catch(error => {
+                if(this.filesInfo.length != 0) {
+                    this.fileUpload(this.commentId);
+                } else {
+                    console.log(error);
+                }
+            })
         },
         changeWorkUser() {
             axios.post(
@@ -195,6 +215,42 @@ export default {
             })
             .catch( err => console.log(err) );
         },
+
+        fileSelected(event){
+            //console.log(event);
+            const ObjectFilesInfo = event.target.files;
+            const ArrayFilesInfo = Object.values(ObjectFilesInfo);    //オブジェクトはmap処理やforEach処理を使えないので、1度配列にする。
+            this.filesInfo = ArrayFilesInfo;
+            console.log(this.filesInfo);
+        },
+        fileUpload(commentId){
+            const formData = new FormData();
+
+            this.filesInfo.forEach((file, index) => {
+                formData.append(`files[${index}]`, file) // formDataに追加していく
+            });
+
+            formData.append('taskId',this.task.id);
+            formData.append('admin_user',this.loginUserId);
+            formData.append('commentId',commentId);
+            formData.append('fromComment',true);
+
+            console.log(...formData.entries());
+
+            axios.post(
+                '/api/file/fromComment/upload',
+                formData
+            )
+            .then(response =>{
+                console.log(response);
+
+                this.$router.go({path: this.$router.currentRoute.path, force: true});
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        },
+
         fileDownload(file) {
             const fileId = file.id;
             axios.post(
@@ -218,6 +274,7 @@ export default {
             link.target = "_blank"
             link.click()
         }
+
     },
 }
 </script>

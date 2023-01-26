@@ -16,7 +16,7 @@ class CommentController extends Controller
     public function index()
     {
         $id = request('task_id');
-        $comments = Comment::with(['task', 'user'])->where('task_id', $id)->get();
+        $comments = Comment::with(['task', 'user', 'files'])->where('task_id', $id)->get();
 
         return response()->json([
             'comments' => $comments,
@@ -41,11 +41,19 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        $comment = Comment::create([
-            'task_id' => request('task_id'),
-            'user_id' => request('user_id'),
-            'text' => request('comment')
-        ]);
+        if (request('comment')) {
+            $comment = Comment::create([
+                'task_id' => request('task_id'),
+                'user_id' => request('user_id'),
+                'text' => request('comment')
+            ]);
+
+            $commentId = $comment->id;
+
+            return response()->json([
+                'commentId' => $commentId,
+            ]);
+        }
     }
 
     /**

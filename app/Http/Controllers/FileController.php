@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\File;
+use App\Services\DetailProcess;
 
 class FileController extends Controller
 {
@@ -22,6 +23,22 @@ class FileController extends Controller
             'files' => $files,
         ]);
     }
+
+    public function upload(Request $request)
+    {
+        DetailProcess::fileStore($request, null, null);   //ファイル保存処理
+
+    }
+
+    public function uploadFromComment(Request $request)
+    {
+        $data = $request->all();
+        $commentId = $data['commentId'];
+        $fromComment = $data['fromComment'];
+
+        DetailProcess::fileStore($request, $commentId, $fromComment);   //ファイル保存処理
+    }
+
 
     public function download(Request $request)
     {

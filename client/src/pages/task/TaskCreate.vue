@@ -210,7 +210,7 @@ export default {
             console.log(...formData.entries());
 
             axios.post(
-                '/api/file/fileUpload',
+                '/api/file/upload',
                 formData
             )
             .then(response =>{
