@@ -40,6 +40,20 @@ class FileController extends Controller
         DetailProcess::fileStore($request, $commentId, $fromComment);   //ファイル保存処理
     }
 
+    public function getMimeType(Request $request)
+    {
+
+        $fileId = $request->get('file_id');
+        $file = File::find($fileId);
+
+        $filePath = 'public/file/' . $file->file_name;
+        $mimeType = Storage::mimeType($filePath);
+        //$headers = [['Content-Type' => $mimeType]];
+
+        return response()->json([
+            'mimeType' => $mimeType,
+        ]);
+    }
 
     public function download(Request $request)
     {
@@ -47,11 +61,23 @@ class FileController extends Controller
         $fileId = $request->get('file_id');
         $file = File::find($fileId);
 
+        $filePath = 'public/file/' . $file->file_name;
+
+        $original_name = $file->original_name;
+
+        $mimeType = Storage::mimeType($filePath);
+        $headers = [['Content-Type' => $mimeType]];
+
+        if (Storage::exists($filePath)) {
+            return Storage::download($filePath, $original_name, $headers);
+        }
+        /* 
         $pathToFile = 'http://127.0.0.1:8000/storage/file/' . $file->file_name;
         return response()->json([
             'pathToFile' => $pathToFile,
             'file' => $file
         ]);
+ */
     }
 
     /**
