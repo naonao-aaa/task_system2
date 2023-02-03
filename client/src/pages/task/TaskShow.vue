@@ -45,7 +45,7 @@
 
                                 <div v-for="file in files" :key="file.id">
                                     <a v-if="loginUserId == file.user_id" @click="fileDestroy(file.id)" href="javaScript:void(0)" class="btn btn-outline-danger btn-sm mt-1 py-0">削除</a>
-                                    <a href="javaScript:void(0)" @click="fileDownload(file)" class="mx-1">{{ file.original_name}}</a>
+                                    <a href="javaScript:void(0)" @click="getMimeType(file)" class="mx-1">{{ file.original_name}}</a>
                                 </div>
 
                             </div>
@@ -67,7 +67,7 @@
                                 <p class="card-text newline">{{comment.text}}</p>
                                 <template v-if="comment.files">
                                     <div v-for="file in comment.files" :key="file.id">
-                                        <a href="javaScript:void(0)" @click="fileDownload(file)">{{file.original_name}}</a>
+                                        <a href="javaScript:void(0)" @click="getMimeType(file)">{{file.original_name}}</a>
                                     </div>
                                 </template>
                             </div>
@@ -101,6 +101,7 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import { saveAs } from 'file-saver';
 
 export default {
     data() {
@@ -109,7 +110,10 @@ export default {
             workUserId: '0',
             statusId: '0',
             filesInfo: [],
-            commentId: ''
+            commentId: '',
+            mimeType: '',
+            fileId: '',
+            fileOriginalName: '',
         };
     },
     computed: {
@@ -268,22 +272,44 @@ export default {
             })
         },
 
-        fileDownload(file) {
-            const fileId = file.id;
+        getMimeType(file) {
+            this.fileId = file.id;
+            this.fileOriginalName = file.original_name;
+
+            axios.post(
+                '/api/file/getMimeType',
+                {
+                    file_id: this.fileId
+                },
+            )
+            .then((response) => {
+                console.log(response);
+                this.mimeType = response.data.mimeType;
+                this.fileDownload();
+            })
+        },
+        fileDownload() {
             axios.post(
                 '/api/file/download',
                 {
-                    file_id: fileId
+                    file_id: this.fileId
                 },
+                {
+                    responseType: "blob",
+                }
             )
             .then(response => {
                 console.log(response);
-                this.downloadByURL(response.data.pathToFile, response.data.file.original_name);
+                
+                const name = this.fileOriginalName;
+                const blob = new Blob([response.data], { type: this.mimeType });
+                saveAs(blob, name);
             })
             .catch(error => {
                 console.log(error);
             });
         },
+/*         
         downloadByURL(url, fileName) {
             const link = document.createElement('a')
             link.download = fileName;        //同一オリジンではないからだと思われるが、download属性が機能してくれない。。
@@ -291,7 +317,7 @@ export default {
             link.target = "_blank"
             link.click()
         },
-
+ */
         fileDestroy(fileId){
             axios.post(
                 '/api/file/destroy',
