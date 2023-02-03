@@ -16,6 +16,7 @@
                         </ul>
                         <br>
                         <button class="btn btn-success" @click="update">更新する</button>
+                        test
                     <!--{{category.name}}
                     <br>
                     {{category.id}}-->
