@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-header">タスク管理画面</div>
-        テスト
+
         <div class="card-body">
 
             <button v-on:click="create" class="btn btn-outline-primary">
