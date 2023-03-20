@@ -4,7 +4,7 @@
 
         <div class="card-body">
 
-            <button v-on:click="create" class="btn btn-outline-primary">
+            <button v-if="loginUser.admin == true" v-on:click="create" class="btn btn-outline-primary">
                 新規登録
             </button>
 
@@ -22,8 +22,8 @@
                 <tr>
                     <th>{{category.id}}</th>
                     <td>{{category.name}}</td>
-                    <td><button class="btn btn-outline-success" @click="goEdit(category.id)">編集</button></td>
-                    <td><button class="btn btn-outline-danger" @click="goDestroy(category.id)">削除</button></td>
+                    <td><button v-if="loginUser.admin == true" class="btn btn-outline-success" @click="goEdit(category.id)">編集</button></td>
+                    <td><button v-if="loginUser.admin == true" class="btn btn-outline-danger" @click="goDestroy(category.id)">削除</button></td>
                     <td>{{category.updated_at}}</td>
                 </tr>
                 </tbody>
@@ -38,7 +38,10 @@ export default {
     computed: {
         categories() {
             return this.$store.getters.categoryList;
-        }
+        },
+        loginUser() {
+            return this.$store.getters.loginUser;
+        },
     },
     created() {
         this.$store.dispatch('updateCategoryList');

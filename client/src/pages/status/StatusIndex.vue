@@ -4,7 +4,7 @@
 
         <div class="card-body">
 
-            <button v-on:click="create" class="btn btn-outline-primary">
+            <button v-if="loginUser.admin == true" v-on:click="create" class="btn btn-outline-primary">
                 新規登録
             </button>
 
@@ -22,8 +22,8 @@
                 <tr>
                     <th>{{status.id}}</th>
                     <td>{{status.name}}</td>
-                    <td><button class="btn btn-outline-success" @click="goEdit(status.id)">編集</button></td>
-                    <td><button class="btn btn-outline-danger" @click="goDestroy(status.id)">削除</button></td>
+                    <td><button v-if="loginUser.admin == true" class="btn btn-outline-success" @click="goEdit(status.id)">編集</button></td>
+                    <td><button v-if="loginUser.admin == true" class="btn btn-outline-danger" @click="goDestroy(status.id)">削除</button></td>
                     <td>{{status.updated_at}}</td>
                 </tr>
                 </tbody>
@@ -37,7 +37,10 @@ export default {
     computed: {
         statuses() {
             return this.$store.getters.statusList;
-        }
+        },
+        loginUser() {
+            return this.$store.getters.loginUser;
+        },
     },
     created() {
         this.$store.dispatch('updateStatusList');
