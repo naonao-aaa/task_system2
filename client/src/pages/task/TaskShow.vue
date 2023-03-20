@@ -76,7 +76,7 @@
 
                         <br>
                         <div method="POST" action="#" enctype="multipart/form-data">
-                            <textarea class="form-control" rows="5" name="comment" v-model="comment"></textarea>
+                            <textarea class="form-control" rows="5" name="comment" v-model="comment" placeholder="こちらにコメントを入力してください！"></textarea>
                             <!--{{comment}}-->
                             <input type="hidden" name="user" v-model="loginUserId">
                             <input class="mt-1 mx-1" type="file" name="file" multiple v-on:change="fileSelected">
