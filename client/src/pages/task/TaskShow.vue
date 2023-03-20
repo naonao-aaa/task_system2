@@ -50,9 +50,10 @@
 
                             </div>
                             <div class="card-footer text-muted">
-                                <button class="btn btn-outline-success" @click="goEdit(task.id)">編集</button>
-
-                                <button class="btn btn-outline-danger mx-4" @click="goDestroy(task.id)">削除</button>
+                                <!--ログインユーザーとタスク登録者が同じ時 または ログインユーザーとタスク担当者が同じ時 または 管理者ユーザーでログインしている時 に、削除ボタンが表示されるように。-->
+                                <button v-if="loginUserId == task.admin_user.id || loginUserId == task.work_user.id || loginUser.admin == true" class="btn btn-outline-success" @click="goEdit(task.id)">編集</button>
+                                <!--ログインユーザーとタスク登録者が同じ時 または 管理者ユーザーでログインしている時 に、削除ボタンが表示されるように。-->
+                                <button v-if="loginUserId == task.admin_user.id || loginUser.admin == true" class="btn btn-outline-danger mx-4" @click="goDestroy(task.id)">削除</button>
                             </div>
                         </div>
 
@@ -137,6 +138,9 @@ export default {
         },
         loginUserId() {
             return this.$store.getters.loginUser.id;
+        },
+        loginUser() {
+            return this.$store.getters.loginUser;
         },
         files() {
             return this.$store.getters.fileList;
