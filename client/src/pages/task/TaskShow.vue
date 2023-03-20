@@ -81,7 +81,14 @@
                             <input type="hidden" name="user" v-model="loginUserId">
                             <input class="mt-1 mx-1" type="file" name="file" multiple v-on:change="fileSelected">
                             <br>
-                            <button class="btn btn-dark mt-1" @click="commentSubmit">コメント投稿する</button>
+                            
+                            <template v-if="filesInfo.length >= 2">
+                                <div v-for="file in filesInfo" :key="file.id">
+                                {{file.name}}
+                                </div>
+                            </template>
+                            
+                            <button class="btn btn-dark mt-1" @click="commentSubmit">投稿する</button>
                         </div>
 
                         <select class="mt-2 mx-1" v-model="workUserId" v-on:change="changeWorkUser">
