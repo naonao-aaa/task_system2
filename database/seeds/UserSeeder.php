@@ -15,32 +15,37 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'name' => 'test1',
-                'email' => 'test1@example.com',
-                'password' => Hash::make('password123'),
+                'name' => 'admin',
+                'email' => 'admin@example.com',
+                'admin' => true,
+                'password' => Hash::make($_ENV['ADMIN_USER_PASSWORD']),
                 'api_token' => Str::random(60),
             ],
             [
                 'name' => 'test2',
                 'email' => 'test2@example.com',
+                'admin' => false,
                 'password' => Hash::make('password123'),
                 'api_token' => Str::random(60),
             ],
             [
                 'name' => 'test3',
                 'email' => 'test3@example.com',
+                'admin' => false,
                 'password' => Hash::make('password123'),
                 'api_token' => Str::random(60),
             ],
             [
                 'name' => 'test4',
                 'email' => 'test4@example.com',
+                'admin' => false,
                 'password' => Hash::make('password123'),
                 'api_token' => Str::random(60),
             ],
             [
                 'name' => 'test5',
                 'email' => 'test5@example.com',
+                'admin' => false,
                 'password' => Hash::make('password123'),
                 'api_token' => Str::random(60),
             ],
