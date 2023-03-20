@@ -18,7 +18,7 @@
                     <th scope="col">更新日</th>
                     </tr>
                 </thead>
-                <tbody v-for="status in statuses" :key="status.id">
+                <tbody v-for="status in afterSliceStatusesForPaginate" :key="status.id">
                 <tr>
                     <th>{{status.id}}</th>
                     <td>{{status.name}}</td>
@@ -28,12 +28,35 @@
                 </tr>
                 </tbody>
             </table>
+
+            <VuePaginate
+                :page-count="getPageCount"
+                :page-range="3"
+                :margin-pages="2"
+                :click-handler="clickCallback"
+                :prev-text="'＜'"
+                :next-text="'＞'"
+                :container-class="'pagination'"
+                :page-class="'page-item'"
+                :page-link-class="'page-link'"
+                :prev-class="'page-item'"
+                :prev-link-class="'page-link'"
+                :next-class="'page-item'"
+                :next-link-class="'page-link'">
+            </VuePaginate>
+
         </div>
     </div>
 </template>
 
 <script>
 export default {
+    data() {
+        return {
+            currentPage: 1,
+            perPage: 10,
+        };
+    },
     computed: {
         statuses() {
             return this.$store.getters.statusList;
@@ -41,6 +64,15 @@ export default {
         loginUser() {
             return this.$store.getters.loginUser;
         },
+        afterSliceStatusesForPaginate() {
+            let current = this.currentPage * this.perPage;
+            let start = current - this.perPage;
+            return this.statuses.slice(start, current);
+        },
+        getPageCount() {
+            //console.log(this.computedTasks.length);
+            return Math.ceil(this.statuses.length / this.perPage);
+        }
     },
     created() {
         this.$store.dispatch('updateStatusList');
@@ -63,6 +95,9 @@ export default {
                 params: { id: id}
             })
         },
+        clickCallback(pageNum) {
+            this.currentPage = Number(pageNum);
+        }
     }
 }
 </script>
