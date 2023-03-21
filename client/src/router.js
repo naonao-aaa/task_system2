@@ -59,7 +59,7 @@ export default new Router({
       beforeEnter(to, from, next) {
         if(store.getters.loginUser.admin == true) {    //管理者権限
           next();
-        } else if (to.params.id != store.getters.loginUser.id) {   //ログインユーザーと一致しない時
+        } else if (to.params.id != store.getters.loginUser.id || store.getters.loginUser.guest == true) {   //ログインユーザーと一致しない時 または guestユーザーの時
           next('/user/index');
         }
         next();
@@ -72,7 +72,7 @@ export default new Router({
       beforeEnter(to, from, next) {
         if(store.getters.loginUser.admin == true) {    //管理者権限
           next();
-        } else if (to.params.id != store.getters.loginUser.id) {    //ログインユーザーと一致しない時
+        } else if (to.params.id != store.getters.loginUser.id || store.getters.loginUser.guest == true) {    //ログインユーザーと一致しない時 または guestユーザーの時
           next('/user/index');
         }
         next();
@@ -85,7 +85,7 @@ export default new Router({
       beforeEnter(to, from, next) {
         if(store.getters.loginUser.admin == true) {    //管理者権限
           next();
-        } else if (to.params.id != store.getters.loginUser.id) {    //ログインユーザーと一致しない時
+        } else if (to.params.id != store.getters.loginUser.id || store.getters.loginUser.guest == true) {    //ログインユーザーと一致しない時 または guestユーザーの時
           next('/user/index');
         }
         next();

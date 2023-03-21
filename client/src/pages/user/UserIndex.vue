@@ -22,8 +22,8 @@
                 <tr>
                   <th>{{user.id}}</th>
                   <td>{{user.name}}</td>
-                  <td><button v-if="loginUser.id == user.id || loginUser.admin == true" class="btn btn-outline-success" @click="goEdit(user.id)">編集</button></td>
-                  <td><button v-if="loginUser.id == user.id || loginUser.admin == true" class="btn btn-outline-danger" @click="goDestroy(user.id)">削除</button></td>
+                  <td><button v-if=" loginUser.guest == false && (loginUser.id == user.id || loginUser.admin == true) " class="btn btn-outline-success" @click="goEdit(user.id)">編集</button></td>
+                  <td><button v-if=" loginUser.guest == false && (loginUser.id == user.id || loginUser.admin == true) " class="btn btn-outline-danger" @click="goDestroy(user.id)">削除</button></td>
                   <td>{{user.updated_at}}</td>
                 </tr>
               </tbody>
