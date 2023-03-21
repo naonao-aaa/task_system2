@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
                 'email' => 'test2@example.com',
                 'admin' => false,
                 'guest' => false,
-                'password' => Hash::make('password123'),
+                'password' => Hash::make($_ENV['TEST_USER_PASSWORD']),
                 'api_token' => Str::random(60),
             ],
             [
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
                 'email' => 'test3@example.com',
                 'admin' => false,
                 'guest' => false,
-                'password' => Hash::make('password123'),
+                'password' => Hash::make($_ENV['TEST_USER_PASSWORD']),
                 'api_token' => Str::random(60),
             ],
             [
@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
                 'email' => 'test4@example.com',
                 'admin' => false,
                 'guest' => false,
-                'password' => Hash::make('password123'),
+                'password' => Hash::make($_ENV['TEST_USER_PASSWORD']),
                 'api_token' => Str::random(60),
             ],
             [
@@ -51,7 +51,7 @@ class UserSeeder extends Seeder
                 'email' => 'test5@example.com',
                 'admin' => false,
                 'guest' => false,
-                'password' => Hash::make('password123'),
+                'password' => Hash::make($_ENV['TEST_USER_PASSWORD']),
                 'api_token' => Str::random(60),
             ],
             [
