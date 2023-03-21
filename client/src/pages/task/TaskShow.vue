@@ -58,34 +58,36 @@
                         </div>
 
                         <!--ログインユーザーがタスク登録者または管理者権限ユーザーの時に表示。-->
-                        <select v-if="loginUserId == task.admin_user.id || loginUser.admin == true" class="my-3 mx-1" v-model="workUserId" v-on:change="changeWorkUser">
+                        <select v-if="loginUserId == task.admin_user.id || loginUser.admin == true" class="mt-2 mx-1" v-model="workUserId" v-on:change="changeWorkUser">
                             <option value="0" selected>担当者変更</option>
                             <option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</option>
                         </select>
                         <!--ログインユーザーがタスク担当者または管理者権限ユーザーの時に表示。-->
-                        <select v-if="loginUserId == task.work_user.id || loginUser.admin == true" class="my-3 mx-1" v-model="statusId" v-on:change="changeStatus">
+                        <select v-if="loginUserId == task.work_user.id || loginUser.admin == true" class="mt-2 mx-1" v-model="statusId" v-on:change="changeStatus">
                             <option value="0" selected>ステータス変更</option>
                             <option v-for="status in statuses" :key="status.id" :value="status.id">{{status.name}}</option>
                         </select>
 
                         <!--{{comments}}-->
-                        <div class="card mt-1" v-for="comment in comments" :key="comment.id">
-                            <div class="card-header text-muted" style="position: relative;">
-                                <div style="display: inline;">投稿者：{{ comment.user ? comment.user.name : ''}}</div>
-                                <div style="display: inline; position: absolute; right: 15px;">{{ comment.created_at | moment_HH_mm }}</div>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text newline">{{comment.text}}</p>
-                                <template v-if="comment.files">
-                                    <div v-for="file in comment.files" :key="file.id">
-                                        <a href="javaScript:void(0)" @click="getMimeType(file)">{{file.original_name}}</a>
-                                    </div>
-                                </template>
+                        <div class="mt-2">
+                            <div class="card" v-for="comment in comments" :key="comment.id">
+                                <div class="card-header text-muted" style="position: relative;">
+                                    <div style="display: inline;">投稿者：{{ comment.user ? comment.user.name : ''}}</div>
+                                    <div style="display: inline; position: absolute; right: 15px;">{{ comment.created_at | moment_HH_mm }}</div>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text newline">{{comment.text}}</p>
+                                    <template v-if="comment.files">
+                                        <div v-for="file in comment.files" :key="file.id">
+                                            <a href="javaScript:void(0)" @click="getMimeType(file)">{{file.original_name}}</a>
+                                        </div>
+                                    </template>
+                                </div>
                             </div>
                         </div>
 
                         <br>
-                        <div class="mt-1" method="POST" action="#" enctype="multipart/form-data">
+                        <div method="POST" action="#" enctype="multipart/form-data">
                             <textarea class="form-control" rows="5" name="comment" v-model="comment" placeholder="こちらにコメントを入力してください！"></textarea>
                             <!--{{comment}}-->
                             <input type="hidden" name="user" v-model="loginUserId">
