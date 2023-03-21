@@ -50,14 +50,24 @@
 
                             </div>
                             <div class="card-footer text-muted">
-                                <!--ログインユーザーとタスク登録者が同じ時 または ログインユーザーとタスク担当者が同じ時 または 管理者ユーザーでログインしている時 に、削除ボタンが表示されるように。-->
+                                <!--ログインユーザーが、タスク登録者 または タスク担当者 または 管理者権限ユーザーの時 に、編集ボタンが表示されるように。-->
                                 <button v-if="loginUserId == task.admin_user.id || loginUserId == task.work_user.id || loginUser.admin == true" class="btn btn-outline-success" @click="goEdit(task.id)">編集</button>
-                                <!--ログインユーザーとタスク登録者が同じ時 または 管理者ユーザーでログインしている時 に、削除ボタンが表示されるように。-->
+                                <!--ログインユーザーが、タスク登録者 または 管理者権限ユーザーの時 に、削除ボタンが表示されるように。-->
                                 <button v-if="loginUserId == task.admin_user.id || loginUser.admin == true" class="btn btn-outline-danger mx-4" @click="goDestroy(task.id)">削除</button>
                             </div>
                         </div>
 
-                        <br>
+                        <!--ログインユーザーがタスク登録者または管理者権限ユーザーの時に表示。-->
+                        <select v-if="loginUserId == task.admin_user.id || loginUser.admin == true" class="my-3 mx-1" v-model="workUserId" v-on:change="changeWorkUser">
+                            <option value="0" selected>担当者変更</option>
+                            <option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</option>
+                        </select>
+                        <!--ログインユーザーがタスク担当者または管理者権限ユーザーの時に表示。-->
+                        <select v-if="loginUserId == task.work_user.id || loginUser.admin == true" class="my-3 mx-1" v-model="statusId" v-on:change="changeStatus">
+                            <option value="0" selected>ステータス変更</option>
+                            <option v-for="status in statuses" :key="status.id" :value="status.id">{{status.name}}</option>
+                        </select>
+
                         <!--{{comments}}-->
                         <div class="card" v-for="comment in comments" :key="comment.id">
                             <div class="card-header text-muted" style="position: relative;">
@@ -75,7 +85,7 @@
                         </div>
 
                         <br>
-                        <div method="POST" action="#" enctype="multipart/form-data">
+                        <div class="mt-1" method="POST" action="#" enctype="multipart/form-data">
                             <textarea class="form-control" rows="5" name="comment" v-model="comment" placeholder="こちらにコメントを入力してください！"></textarea>
                             <!--{{comment}}-->
                             <input type="hidden" name="user" v-model="loginUserId">
@@ -90,15 +100,6 @@
                             
                             <button class="btn btn-dark mt-1" @click="commentSubmit">投稿する</button>
                         </div>
-
-                        <select class="mt-2 mx-1" v-model="workUserId" v-on:change="changeWorkUser">
-                            <option value="0" selected>担当者変更</option>
-                            <option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</option>
-                        </select>
-                        <select class="mt-2 mx-1" v-model="statusId" v-on:change="changeStatus">
-                            <option value="0" selected>ステータス変更</option>
-                            <option v-for="status in statuses" :key="status.id" :value="status.id">{{status.name}}</option>
-                        </select>
                 </div>
             </div>
         </div>
