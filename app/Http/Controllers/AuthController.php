@@ -20,10 +20,12 @@ class AuthController extends Controller
         if (!empty($user) && Hash::check($password, $hash_password)) {
             // ログイン成功
             //$user->setApiToken();
+            $accessToken = $user->createToken('authToken')->accessToken;
 
             return response()->json([
                 'status' => 'OK',
                 'user'   => $user,
+                'access_token' => $accessToken
             ]);
         } else {
             // ログイン失敗

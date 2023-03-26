@@ -3,12 +3,14 @@ import router from '../../router.js';
 
 const state = {
     loginUser: null,
-    loginErrorMessages: null
+    loginErrorMessages: null,
+    loginUserToken: null
 };
 
 const getters = {
     loginUser: state => state.loginUser,
-    loginErrorMessages: state => state.loginErrorMessages
+    loginErrorMessages: state => state.loginErrorMessages,
+    loginUserToken: state => state.loginUserToken
 };
 
 const mutations = {
@@ -18,6 +20,9 @@ const mutations = {
     updateLoginErrorMessages(state, newLoginErrorMessages) {
         state.loginErrorMessages = newLoginErrorMessages;
     },
+    updateLoginUserToken(state, newLoginUserToken) {
+        state.loginUserToken = newLoginUserToken;
+    },
 };
 
 const actions = {
@@ -25,6 +30,10 @@ const actions = {
         const loginUserInLocalStorage = JSON.parse(localStorage.getItem('loginUserInLocalStorage'));
         if (!loginUserInLocalStorage) return;
         commit('updateLoginUser', loginUserInLocalStorage);
+
+        const loginUserTokenInLocalStorage = localStorage.getItem('loginUserTokenInLocalStorage');
+        if (!loginUserTokenInLocalStorage) return;
+        commit('updateLoginUserToken', loginUserTokenInLocalStorage);
     },
     login({ commit }, loginData) {
         axios.post(
@@ -41,7 +50,13 @@ const actions = {
               const jsonNewLoginUser = JSON.stringify(response.data.user);
               localStorage.setItem('loginUserInLocalStorage', jsonNewLoginUser);
 
+              const newLoginUserToken = response.data.access_token;
+              commit('updateLoginUserToken', newLoginUserToken);
+              localStorage.setItem('loginUserTokenInLocalStorage', newLoginUserToken);
+
               commit('updateLoginErrorMessages', null);
+
+              //console.log(response.data)
 
               router.push({
                   name: "TaskIndex"

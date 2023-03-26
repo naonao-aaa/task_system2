@@ -18,6 +18,7 @@ Vue.config.productionTip = false;
 Vue.component('VuePaginate', VuePaginate);
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+//axios.defaults.headers.common['Authorization'] = `Bearer ${store.getters.loginUserToken}`;
 axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
 
 store.dispatch('autoLogin');
