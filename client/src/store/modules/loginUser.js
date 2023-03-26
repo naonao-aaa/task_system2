@@ -57,7 +57,6 @@ const actions = {
               commit('updateLoginErrorMessages', null);
 
               //console.log(response.data)
-              //test
 
               router.push({
                   name: "TaskIndex"
