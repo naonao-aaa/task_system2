@@ -28,7 +28,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('update', 'AuthController@update')->name('auth.update');
 });
 
-Route::group(['prefix' => 'category'], function () {
+Route::group(['prefix' => 'category', 'middleware' => 'auth:api'], function () {
     Route::get('index', 'CategoryController@index')->name('category.index');
     Route::post('store', 'CategoryController@store')->name('category.store');
     Route::post('update', 'CategoryController@update')->name('category.update');

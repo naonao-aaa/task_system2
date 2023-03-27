@@ -20,7 +20,12 @@ Vue.component('VuePaginate', VuePaginate);
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
 
+//console.log(store.getters.loginUserToken);
+
 store.dispatch('autoLogin');
+
+//console.log(store.getters.loginUserToken);
+//axios.defaults.headers.common['Authorization'] = `Bearer ${store.getters.loginUserToken}`;
 
 router.beforeEach((to, from, next) => {
   console.log('globalbeforEach');
@@ -40,5 +45,3 @@ new Vue({
   store: store,
   render: h => h(App),
 }).$mount('#app');
-
-

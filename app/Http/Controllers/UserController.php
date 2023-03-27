@@ -51,8 +51,11 @@ class UserController extends Controller
             'api_token' => Str::random(60),
         ]);
 
+        $accessToken = $user->createToken('authToken')->accessToken;
+
         return response()->json([
             'user' => $user,
+            'access_token' => $accessToken
         ]);
     }
 
