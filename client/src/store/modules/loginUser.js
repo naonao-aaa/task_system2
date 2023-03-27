@@ -56,8 +56,6 @@ const actions = {
 
               commit('updateLoginErrorMessages', null);
 
-              //console.log(state.loginUserToken);
-
               router.push({
                   name: "TaskIndex"
               });
@@ -77,6 +75,7 @@ const actions = {
     logout({ commit }) {
         commit('updateLoginUser', null);
         localStorage.removeItem('loginUserInLocalStorage');
+        localStorage.removeItem('loginUserTokenInLocalStorage');
         router.replace('/login');
     },
     updateLoginUser({ commit }, updateDataId) {
