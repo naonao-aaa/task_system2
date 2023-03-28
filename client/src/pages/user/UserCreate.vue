@@ -71,6 +71,11 @@ export default {
                     email: this.createUserData.email,
                     password: this.createUserData.password,
                     password_confirmation: this.createUserData.password_confirmation
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.$store.getters.loginUserToken}`,
+                    }
                 }
             )
             .then(response => {

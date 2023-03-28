@@ -69,6 +69,11 @@ export default {
                     user_name: this.user.name,
                     email: this.user.email,
                     id: this.user.id
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.$store.getters.loginUserToken}`,
+                    }
                 }
             )
             .then(response => {

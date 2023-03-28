@@ -56,7 +56,7 @@ Route::group(['prefix' => 'comment'], function () {
     Route::post('statusUpdate', 'CommentController@statusUpdate')->name('comment.statusUpdate');
 });
 
-Route::group(['prefix' => 'user'], function () {
+Route::group(['prefix' => 'user', 'middleware' => 'auth:api'], function () {
     Route::get('index', 'UserController@index')->name('user.index');
     Route::post('store', 'UserController@store')->name('user.store');
     Route::post('update/{user}', 'UserController@update')->name('user.update');      //依存性の注入

@@ -40,6 +40,11 @@ export default {
                 '/api/user/destroy',
                 {
                     id: this.user.id
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.$store.getters.loginUserToken}`,
+                    }
                 }
             )
             .then(response => {
