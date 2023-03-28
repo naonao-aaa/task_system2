@@ -40,13 +40,18 @@ class StatusController extends Controller
      */
     public function store(StoreStatusForm $request)
     {
-        $status = Status::create([
-            'name' => $request->get('status_name'),
-        ]);
+        $userFromToken = auth()->user();   //送られてきたトークンからユーザー情報を取得
 
-        return response()->json([
-            'status' => $status,
-        ]);
+        if ($userFromToken->admin == true) {
+
+            $status = Status::create([
+                'name' => $request->get('status_name'),
+            ]);
+
+            return response()->json([
+                'status' => $status,
+            ]);
+        }
     }
 
     /**
@@ -80,12 +85,17 @@ class StatusController extends Controller
      */
     public function update(StoreStatusForm $request)
     {
-        $id = $request->get('id');
-        $status = Status::find($id);
+        $userFromToken = auth()->user();   //送られてきたトークンからユーザー情報を取得
 
-        $status->name = $request->get('status_name');
+        if ($userFromToken->admin == true) {
 
-        $status->save();
+            $id = $request->get('id');
+            $status = Status::find($id);
+
+            $status->name = $request->get('status_name');
+
+            $status->save();
+        }
     }
 
     /**
@@ -96,9 +106,14 @@ class StatusController extends Controller
      */
     public function destroy()
     {
-        $id = request('id');
-        $status = Status::find($id);
+        $userFromToken = auth()->user();   //送られてきたトークンからユーザー情報を取得
 
-        $status->delete();
+        if ($userFromToken->admin == true) {
+
+            $id = request('id');
+            $status = Status::find($id);
+
+            $status->delete();
+        }
     }
 }
