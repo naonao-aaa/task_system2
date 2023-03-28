@@ -70,11 +70,6 @@ export default {
                     email: this.user.email,
                     id: this.user.id
                 },
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.$store.getters.loginUserToken}`,
-                    }
-                }
             )
             .then(response => {
                 console.log(response);

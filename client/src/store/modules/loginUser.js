@@ -1,5 +1,6 @@
 import axios from 'axios';
 import router from '../../router.js';
+import store from '../index.js';
 
 const state = {
     loginUser: null,
@@ -55,6 +56,10 @@ const actions = {
               localStorage.setItem('loginUserTokenInLocalStorage', newLoginUserToken);
 
               commit('updateLoginErrorMessages', null);
+
+              //main.jsで記述すると、手動でリロードしてmain.jsを再度読み込ませないと、ログイン前に読み込んだmain.jsのstore.getters.loginUserToken（null）が用いられてしまうので、この部分でも記述するべき。
+              //ただ、この記述だけだと、逆に手動でリロードしたした時におかしくなるので、main.jsでも書く必要があると思う。
+              axios.defaults.headers.common['Authorization'] = `Bearer ${store.getters.loginUserToken}`; 
 
               router.push({
                   name: "TaskIndex"

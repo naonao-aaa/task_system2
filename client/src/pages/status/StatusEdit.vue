@@ -55,11 +55,6 @@ export default {
                     status_name: this.status.name,
                     id: this.status.id
                 },
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.$store.getters.loginUserToken}`,
-                    }
-                }
             )
             .then(response => {
                 console.log(response);

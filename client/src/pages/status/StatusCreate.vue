@@ -45,11 +45,6 @@ export default {
                 {
                     status_name: this.createStatusData.status_name
                 },
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.$store.getters.loginUserToken}`,
-                    }
-                }
             )
             .then(response => {
                 console.log(response);

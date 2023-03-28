@@ -45,11 +45,6 @@ export default {
                 {
                     category_name: this.createCategoryData.category_name
                 },
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.$store.getters.loginUserToken}`,
-                    }
-                }
             )
             .then(response => {
                 console.log(response);

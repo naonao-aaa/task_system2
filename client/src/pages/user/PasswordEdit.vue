@@ -62,11 +62,6 @@ export default {
                     password_confirmation: this.user.password_confirmation,
                     id: this.user.id
                 },
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.$store.getters.loginUserToken}`,
-                    }
-                }
             )
             .then(response => {
                 console.log(response);

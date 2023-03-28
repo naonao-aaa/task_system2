@@ -1,5 +1,4 @@
 import axios from 'axios';
-import store from '../index.js';
 
 const state = {
     statusList: [],
@@ -19,11 +18,6 @@ const actions = {
     updateStatusList({ commit }) {
         axios.get(
             '/api/status/index',
-            {
-                headers: {
-                    Authorization: `Bearer ${store.getters.loginUserToken}`,
-                }
-            }
         )
         .then(response => {
             console.log(response);

@@ -20,12 +20,7 @@ const actions = {
         console.log(store.getters.loginUserToken);
 
         axios.get(
-            '/api/category/index',
-            {
-                headers: {
-                    Authorization: `Bearer ${store.getters.loginUserToken}`,
-                }
-            }
+            '/api/category/index'
         )
         .then(response => {
             console.log(response);
