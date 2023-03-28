@@ -25,7 +25,8 @@ axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
 store.dispatch('autoLogin');
 
 //console.log(store.getters.loginUserToken);
-//axios.defaults.headers.common['Authorization'] = `Bearer ${store.getters.loginUserToken}`;
+axios.defaults.headers.common['Authorization'] = `Bearer ${store.getters.loginUserToken}`;  
+//リロード後でないとmain.jsが読み込まれないので、各々のAPIの場所にheaderとして付与する必要があるっぽい。（ここの記述だけでは、ログイン後にリロードしないと読み込まれない）
 
 router.beforeEach((to, from, next) => {
   console.log('globalbeforEach');

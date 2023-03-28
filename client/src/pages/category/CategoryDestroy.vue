@@ -40,6 +40,11 @@ export default {
                 '/api/category/destroy',
                 {
                     id: this.category.id
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.$store.getters.loginUserToken}`,
+                    }
                 }
             )
             .then(response => {
