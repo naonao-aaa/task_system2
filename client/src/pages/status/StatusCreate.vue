@@ -44,6 +44,11 @@ export default {
                 '/api/status/store',
                 {
                     status_name: this.createStatusData.status_name
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.$store.getters.loginUserToken}`,
+                    }
                 }
             )
             .then(response => {

@@ -35,7 +35,7 @@ Route::group(['prefix' => 'category', 'middleware' => 'auth:api'], function () {
     Route::post('destroy', 'CategoryController@destroy')->name('category.destroy');
 });
 
-Route::group(['prefix' => 'status'], function () {
+Route::group(['prefix' => 'status', 'middleware' => 'auth:api'], function () {
     Route::get('index', 'StatusController@index')->name('status.index');
     Route::post('store', 'StatusController@store')->name('status.store');
     Route::post('update', 'StatusController@update')->name('status.update');
