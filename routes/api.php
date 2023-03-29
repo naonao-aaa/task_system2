@@ -64,7 +64,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:api'], function () {
     Route::post('destroy', 'UserController@destroy')->name('user.destroy');
 });
 
-Route::group(['prefix' => 'file'], function () {
+Route::group(['prefix' => 'file', 'middleware' => 'auth:api'], function () {
     //Route::post('fileUpload', 'TaskController@fileUpload')->name('task.fileUpload');
     Route::post('upload', 'FileController@upload')->name('file.upload');
     Route::post('fromComment/upload', 'FileController@uploadfromComment')->name('file.uploadfromComment');
