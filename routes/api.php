@@ -49,7 +49,7 @@ Route::group(['prefix' => 'task', 'middleware' => 'auth:api'], function () {
     Route::post('destroy', 'TaskController@destroy')->name('task.destroy');
 });
 
-Route::group(['prefix' => 'comment'], function () {
+Route::group(['prefix' => 'comment', 'middleware' => 'auth:api'], function () {
     Route::post('index', 'CommentController@index')->name('comment.index');
     Route::post('store', 'CommentController@store')->name('comment.store');
     Route::post('workUserUpdate', 'CommentController@workUserUpdate')->name('comment.workUserUpdate');
