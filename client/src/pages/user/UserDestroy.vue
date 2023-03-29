@@ -40,7 +40,7 @@ export default {
                 '/api/user/destroy',
                 {
                     id: this.user.id
-                }
+                },
             )
             .then(response => {
                 console.log(response);

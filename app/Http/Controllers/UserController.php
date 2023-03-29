@@ -44,16 +44,24 @@ class UserController extends Controller
      */
     public function store(StoreUserForm $request)
     {
-        $user = User::create([
-            'name' => $request->get('user_name'),
-            'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
-            'api_token' => Str::random(60),
-        ]);
+        $userFromToken = auth()->user();   //送られてきたトークンからユーザー情報を取得
 
-        return response()->json([
-            'user' => $user,
-        ]);
+        if ($userFromToken->admin == true) {
+
+            $user = User::create([
+                'name' => $request->get('user_name'),
+                'email' => $request->get('email'),
+                'password' => Hash::make($request->get('password')),
+                'api_token' => Str::random(60),
+            ]);
+
+            $accessToken = $user->createToken('authToken')->accessToken;
+
+            return response()->json([
+                'user' => $user,
+                'access_token' => $accessToken
+            ]);
+        }
     }
 
     /**
@@ -87,23 +95,30 @@ class UserController extends Controller
      */
     public function update(UpdateUserForm $request, User $user)
     {
-        //$id = $request->get('id');
-        //$user = User::find($id);
+        $userFromToken = auth()->user();   //送られてきたトークンからユーザー情報を取得
 
-        $user->name = $request->get('user_name');
-        $user->email = $request->get('email');
+        if ($userFromToken->admin == true || ($userFromToken->guest == false && $userFromToken->id == $user->id)) {   //(管理者権限) または (ゲストじゃなくて、かつ トークンから取得したユーザーIDとパラメーターから取得したユーザーIDが同じ時)
 
-        $user->save();
+            $user->name = $request->get('user_name');
+            $user->email = $request->get('email');
+
+            $user->save();
+        }
     }
 
     public function passwordUpdate(UpdatePasswordForm $request)
     {
+        $userFromToken = auth()->user();   //送られてきたトークンからユーザー情報を取得
+
         $id = $request->get('id');
-        $user = User::find($id);
 
-        $user->password = Hash::make($request->get('password'));
+        if ($userFromToken->admin == true || ($userFromToken->guest == false && $userFromToken->id == $id)) {  //(管理者権限) または (ゲストじゃなくて、かつ トークンから取得したユーザーIDとaxios.postで設定されたユーザーIDが同じ時)
+            $user = User::find($id);
 
-        $user->save();
+            $user->password = Hash::make($request->get('password'));
+
+            $user->save();
+        }
     }
 
     /**
@@ -114,9 +129,15 @@ class UserController extends Controller
      */
     public function destroy()
     {
-        $id = request('id');
-        $category = User::find($id);
+        $userFromToken = auth()->user();   //送られてきたトークンからユーザー情報を取得
 
-        $category->delete();
+        $id = request('id');
+
+        if ($userFromToken->admin == true || ($userFromToken->guest == false && $userFromToken->id == $id)) {  //(管理者権限) または (ゲストじゃなくて、かつ トークンから取得したユーザーIDとaxios.postで設定されたユーザーIDが同じ時)
+
+            $category = User::find($id);
+
+            $category->delete();
+        }
     }
 }

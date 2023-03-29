@@ -40,7 +40,7 @@ export default {
                 '/api/status/destroy',
                 {
                     id: this.status.id
-                }
+                },
             )
             .then(response => {
                 console.log(response);

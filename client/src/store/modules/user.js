@@ -17,7 +17,7 @@ const mutations = {
 const actions = {
     updateUserList({ commit }) {
         axios.get(
-            '/api/user/index'
+            '/api/user/index',
         )
         .then(response => {
             console.log(response);

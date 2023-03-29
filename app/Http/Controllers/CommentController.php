@@ -92,22 +92,34 @@ class CommentController extends Controller
 
     public function workUserUpdate()
     {
+        $userFromToken = auth()->user();   //送られてきたトークンからユーザー情報を取得
+
         $id = request('task.id');
         $task = Task::find($id);
 
-        $task->work_user = request('workUserId');
+        //管理者権限ユーザー または タスク登録者 の時に処理を走らせる
+        if ($userFromToken->admin == true || $userFromToken->id == $task->admin_user) {
 
-        $task->save();
+            $task->work_user = request('workUserId');
+
+            $task->save();
+        }
     }
 
     public function statusUpdate()
     {
+        $userFromToken = auth()->user();   //送られてきたトークンからユーザー情報を取得
+
         $id = request('task.id');
         $task = Task::find($id);
 
-        $task->status_id = request('statusId');
+        //管理者権限ユーザー または タスク担当者 の時に処理を走らせる
+        if ($userFromToken->admin == true || $userFromToken->id == $task->work_user) {
 
-        $task->save();
+            $task->status_id = request('statusId');
+
+            $task->save();
+        }
     }
 
     /**

@@ -22,6 +22,9 @@ axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
 
 store.dispatch('autoLogin');
 
+//loginUser.jsのloginアクションのthen部分にも同様の記述をする必要がある（ログイン後にリロードをしないとこの部分で新しいstore.getters.loginUserToken）が読み込まれないため
+axios.defaults.headers.common['Authorization'] = `Bearer ${store.getters.loginUserToken}`; 
+
 router.beforeEach((to, from, next) => {
   console.log('globalbeforEach');
   if (store.getters.loginUser) {
@@ -40,5 +43,3 @@ new Vue({
   store: store,
   render: h => h(App),
 }).$mount('#app');
-
-

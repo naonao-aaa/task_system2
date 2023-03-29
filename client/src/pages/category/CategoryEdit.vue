@@ -54,7 +54,7 @@ export default {
                 {
                     category_name: this.category.name,
                     id: this.category.id
-                }
+                },
             )
             .then(response => {
                 console.log(response);
