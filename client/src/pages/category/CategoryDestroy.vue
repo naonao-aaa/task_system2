@@ -40,7 +40,7 @@ export default {
                 '/api/category/destroy',
                 {
                     id: this.category.id
-                }
+                },
             )
             .then(response => {
                 console.log(response);

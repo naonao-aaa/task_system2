@@ -40,13 +40,18 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryForm $request)
     {
-        $category = Category::create([
-            'name' => $request->get('category_name'),
-        ]);
+        $user = auth()->user();   //送られてきたトークンからユーザー情報を取得
 
-        return response()->json([
-            'category' => $category,
-        ]);
+        if ($user->admin == true) {
+
+            $category = Category::create([
+                'name' => $request->get('category_name'),
+            ]);
+
+            return response()->json([
+                'category' => $category,
+            ]);
+        }
     }
 
     /**
@@ -80,12 +85,17 @@ class CategoryController extends Controller
      */
     public function update(StoreCategoryForm $request)
     {
-        $id = $request->get('id');
-        $category = Category::find($id);
+        $user = auth()->user();   //送られてきたトークンからユーザー情報を取得
 
-        $category->name = $request->get('category_name');
+        if ($user->admin == true) {
 
-        $category->save();
+            $id = $request->get('id');
+            $category = Category::find($id);
+
+            $category->name = $request->get('category_name');
+
+            $category->save();
+        }
     }
 
     /**
@@ -96,9 +106,14 @@ class CategoryController extends Controller
      */
     public function destroy()
     {
-        $id = request('id');
-        $category = Category::find($id);
+        $user = auth()->user();   //送られてきたトークンからユーザー情報を取得
 
-        $category->delete();
+        if ($user->admin == true) {
+
+            $id = request('id');
+            $category = Category::find($id);
+
+            $category->delete();
+        }
     }
 }

@@ -71,7 +71,7 @@ export default {
                     email: this.createUserData.email,
                     password: this.createUserData.password,
                     password_confirmation: this.createUserData.password_confirmation
-                }
+                },
             )
             .then(response => {
                 console.log(response);

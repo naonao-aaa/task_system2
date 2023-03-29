@@ -69,7 +69,7 @@ export default {
                     user_name: this.user.name,
                     email: this.user.email,
                     id: this.user.id
-                }
+                },
             )
             .then(response => {
                 console.log(response);

@@ -44,7 +44,7 @@ export default {
                 '/api/status/store',
                 {
                     status_name: this.createStatusData.status_name
-                }
+                },
             )
             .then(response => {
                 console.log(response);

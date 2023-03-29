@@ -61,7 +61,7 @@ export default {
                     password: this.user.password,
                     password_confirmation: this.user.password_confirmation,
                     id: this.user.id
-                }
+                },
             )
             .then(response => {
                 console.log(response);

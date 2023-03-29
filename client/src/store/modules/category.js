@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from '../index.js';
 
 const state = {
     categoryList: [],
@@ -16,6 +17,8 @@ const mutations = {
 
 const actions = {
     updateCategoryList({ commit }) {
+        console.log(store.getters.loginUserToken);
+
         axios.get(
             '/api/category/index'
         )

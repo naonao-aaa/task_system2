@@ -143,21 +143,27 @@ class FileController extends Controller
      */
     public function destroy(Request $request)
     {
+        $userFromToken = auth()->user();   //送られてきたトークンからユーザー情報を取得
+
         $fileId = $request->get('file_id');
         $file = File::find($fileId);
 
-        //Storageフォルダの中のファイルを削除する処理
-        $filePath = 'public/file/' . $file->file_name;
-        if (Storage::exists($filePath)) {
-            Storage::delete($filePath);
+        //管理者権限ユーザー または ファイル登録者 の時に処理を走らせる
+        if ($userFromToken->admin == true || $userFromToken->id == $file->user_id) {
+
+            //Storageフォルダの中のファイルを削除する処理
+            $filePath = 'public/file/' . $file->file_name;
+            if (Storage::exists($filePath)) {
+                Storage::delete($filePath);
+            }
+
+            //テーブル情報を削除する処理
+            $file->delete();
+
+            return response()->json([
+                'message' => 'ファイル削除を実施しました。',
+                'status' => 'OK'
+            ]);
         }
-
-        //テーブル情報を削除する処理
-        $file->delete();
-
-        return response()->json([
-            'message' => 'ファイル削除を実施しました。',
-            'status' => 'OK'
-        ]);
     }
 }

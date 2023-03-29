@@ -44,7 +44,7 @@ export default {
                 '/api/category/store',
                 {
                     category_name: this.createCategoryData.category_name
-                }
+                },
             )
             .then(response => {
                 console.log(response);

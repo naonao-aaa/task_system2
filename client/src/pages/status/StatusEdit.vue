@@ -54,7 +54,7 @@ export default {
                 {
                     status_name: this.status.name,
                     id: this.status.id
-                }
+                },
             )
             .then(response => {
                 console.log(response);
