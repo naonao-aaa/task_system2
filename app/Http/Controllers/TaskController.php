@@ -91,23 +91,29 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskForm $request)
     {
+        $userFromToken = auth()->user();   //送られてきたトークンからユーザー情報を取得
+
         $id = $request->get('id');
         $task = Task::find($id);
 
-        $task->name = $request->get('task_name');
-        $task->description = $request->get('description');
-        $task->work_user = $request->get('work_user');
-        $task->category_id = $request->get('category');
-        $task->status_id = $request->get('status');
-        $task->deadline = $request->get('deadline');
-        $task->progress = $request->get('progress');
-        $task->man_hours = $request->get('man_hours');
+        //管理者権限ユーザー または タスク登録者 または タスク担当者 の時に処理を走らせる
+        if ($userFromToken->admin == true || $userFromToken->id == $task->admin_user || $userFromToken->id == $task->work_user) {
 
-        $task->save();
+            $task->name = $request->get('task_name');
+            $task->description = $request->get('description');
+            $task->work_user = $request->get('work_user');
+            $task->category_id = $request->get('category');
+            $task->status_id = $request->get('status');
+            $task->deadline = $request->get('deadline');
+            $task->progress = $request->get('progress');
+            $task->man_hours = $request->get('man_hours');
 
-        return response()->json([
-            'task' => $task,
-        ]);
+            $task->save();
+
+            return response()->json([
+                'task' => $task,
+            ]);
+        }
     }
 
     /**
@@ -118,9 +124,15 @@ class TaskController extends Controller
      */
     public function destroy()
     {
-        $id = request('id');
-        $user = Task::find($id);
+        $userFromToken = auth()->user();   //送られてきたトークンからユーザー情報を取得
 
-        $user->delete();
+        $id = request('id');
+        $task = Task::find($id);
+
+        //管理者権限ユーザー または タスク登録者 の時に処理を走らせる
+        if ($userFromToken->admin == true || $userFromToken->id == $task->admin_user) {
+
+            $task->delete();
+        }
     }
 }
