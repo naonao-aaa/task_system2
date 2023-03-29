@@ -42,7 +42,7 @@ Route::group(['prefix' => 'status', 'middleware' => 'auth:api'], function () {
     Route::post('destroy', 'StatusController@destroy')->name('status.destroy');
 });
 
-Route::group(['prefix' => 'task'], function () {
+Route::group(['prefix' => 'task', 'middleware' => 'auth:api'], function () {
     Route::get('index', 'TaskController@index')->name('task.index');
     Route::post('store', 'TaskController@store')->name('task.store');
     Route::post('update', 'TaskController@update')->name('task.update');
