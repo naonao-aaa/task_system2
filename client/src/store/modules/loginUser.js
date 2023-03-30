@@ -28,13 +28,27 @@ const mutations = {
 
 const actions = {
     autoLogin({commit}) {
-        const loginUserInLocalStorage = JSON.parse(localStorage.getItem('loginUserInLocalStorage'));
-        if (!loginUserInLocalStorage) return;
-        commit('updateLoginUser', loginUserInLocalStorage);
 
         const loginUserTokenInLocalStorage = localStorage.getItem('loginUserTokenInLocalStorage');
         if (!loginUserTokenInLocalStorage) return;
         commit('updateLoginUserToken', loginUserTokenInLocalStorage);
+
+        //必要
+        axios.defaults.headers.common['Authorization'] = `Bearer ${store.getters.loginUserToken}`; 
+
+        console.log('autoLogin');
+
+        axios.get(
+            '/api/reload/getUserInfo'
+        )
+        .then(response => {
+            const reloadedLoginUser = response.data.userFromToken;
+            commit('updateLoginUser', reloadedLoginUser);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
     },
     login({ commit }, loginData) {
         axios.post(
@@ -48,11 +62,9 @@ const actions = {
               const newLoginUser = response.data.user;
               commit('updateLoginUser', newLoginUser);
 
-              const jsonNewLoginUser = JSON.stringify(response.data.user);
-              localStorage.setItem('loginUserInLocalStorage', jsonNewLoginUser);
-
               const newLoginUserToken = response.data.access_token;
               commit('updateLoginUserToken', newLoginUserToken);
+              //ローカルストレージには、tokenのみを保存する。（Vuexは好きに使って良いけど）
               localStorage.setItem('loginUserTokenInLocalStorage', newLoginUserToken);
 
               commit('updateLoginErrorMessages', null);
@@ -79,7 +91,7 @@ const actions = {
     },
     logout({ commit }) {
         commit('updateLoginUser', null);
-        localStorage.removeItem('loginUserInLocalStorage');
+
         localStorage.removeItem('loginUserTokenInLocalStorage');
         router.replace('/login');
     },
@@ -96,8 +108,8 @@ const actions = {
 
           commit('updateLoginUser', newLoginUser);
 
-          const jsonNewLoginUser = JSON.stringify(response.data.user);
-          localStorage.setItem('loginUserInLocalStorage', jsonNewLoginUser);
+          //const jsonNewLoginUser = JSON.stringify(response.data.user);
+          //localStorage.setItem('loginUserInLocalStorage', jsonNewLoginUser);
 /*
           router.push({
               name: "UserIndex"
