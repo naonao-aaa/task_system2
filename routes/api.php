@@ -28,6 +28,10 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('update', 'AuthController@update')->name('auth.update');
 });
 
+Route::group(['prefix' => 'reload', 'middleware' => 'auth:api'], function () {
+    Route::get('getUserInfo', 'ReloadController@getUserInfo')->name('auth.getUserInfo');
+});
+
 Route::group(['prefix' => 'category', 'middleware' => 'auth:api'], function () {
     Route::get('index', 'CategoryController@index')->name('category.index');
     Route::post('store', 'CategoryController@store')->name('category.store');
