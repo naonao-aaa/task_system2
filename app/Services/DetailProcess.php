@@ -33,7 +33,7 @@ class DetailProcess
         //$taskId = json_decode($data['taskId']);
         //$admin_user = json_decode($data['admin_user']);
 
-        if ($commentId) {
+        if ($commentId) {                   //オリジナルのコメントと一緒にファイルをアップロードした場合（コメント部分から）
           $fileInstance = File::create([          //DBに保存
             'task_id' => $taskId,
             'user_id' => $admin_user,
@@ -41,8 +41,8 @@ class DetailProcess
             'original_name' => $originalName,
             'comment_id' => $commentId
           ]);
-        } else {
-          if ($fromComment) {
+        } else {                            //オリジナルのコメントをせずにファイルをアップロードした場合
+          if ($fromComment) {                    //コメント部分から、ファイルのみをアップロードした場合（オリジナルのコメントはしていない）
             $comment = Comment::create([
               'task_id' => $taskId,
               'user_id' => $admin_user,
@@ -55,7 +55,7 @@ class DetailProcess
               'original_name' => $originalName,
               'comment_id' => $comment->id
             ]);
-          } else {
+          } else {                                //コメント部分以外(タスク登録画面など)から、ファイルをアップロードした場合
             $fileInstance = File::create([          //DBに保存
               'task_id' => $taskId,
               'user_id' => $admin_user,
