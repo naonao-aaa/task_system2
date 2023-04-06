@@ -112,6 +112,9 @@ export default {
     },
     created() {
         this.$store.dispatch('updateTaskList');
+        this.$store.dispatch('updateCategoryList');
+        this.$store.dispatch('updateStatusList');
+        this.$store.dispatch('updateUserList');
     },
     methods: {
         create() {
