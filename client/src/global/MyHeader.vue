@@ -73,9 +73,9 @@ export default {
       }
   },
   created() {
-      this.$store.dispatch('updateCategoryList');
-      this.$store.dispatch('updateStatusList');
-      this.$store.dispatch('updateUserList');
+      //this.$store.dispatch('updateCategoryList');
+      //this.$store.dispatch('updateStatusList');
+      //this.$store.dispatch('updateUserList');
       //console.log(this.$route.name);
   },
   methods: {
