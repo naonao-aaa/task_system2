@@ -49,6 +49,7 @@ class TaskController extends Controller
             'name' => $request->get('task_name'),
             'description' => $request->get('description'),
             'work_user' => $request->get('work_user'),
+            'priority' => $request->get('priority'),
             'category_id' => $request->get('category'),
             'status_id' => $request->get('status'),
             'deadline' => $request->get('deadline'),
