@@ -9,6 +9,11 @@
               カテゴリ名<br>
               <input type="text" class="form-control" name="category_name" v-model="createCategoryData.category_name">
               <br>
+
+              <div v-if="$v.category_name.$dirty">
+                <div class="error" v-if="!$v.category_name.required">カテゴリ名は必須入力です。</div>
+              </div>
+       
               <ul>
                   <div v-for="error in errors.category_name" :key="error.id">
                       <li class="errorMessage">{{error}}</li>
@@ -26,6 +31,8 @@
 
 <script>
 import axios from 'axios';
+//const { required } = window.validators
+import { required } from 'vuelidate/lib/validators';
 
 export default {
     data() {
@@ -38,6 +45,13 @@ export default {
             }
         };
     },
+
+    validations: {
+        category_name: {
+            required,
+        },
+    },
+
     methods: {
         register() {
             axios.post(
@@ -63,7 +77,15 @@ export default {
             });
 
             this.createCategoryData.category_name = '';
+        },
+
+        status(validation) {
+            return {
+                error: validation.$error,
+                dirty: validation.$dirty
+            }
         }
+     
     },
 }
 </script>

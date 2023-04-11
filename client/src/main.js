@@ -9,6 +9,7 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import VuePaginate from 'vuejs-paginate';
+import Vuelidate from 'vuelidate';
 
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
@@ -16,6 +17,8 @@ Vue.use(IconsPlugin);
 Vue.config.productionTip = false;
 
 Vue.component('VuePaginate', VuePaginate);
+
+Vue.use(Vuelidate);
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
