@@ -33,6 +33,14 @@
                             </div>
                         </ul>
 
+                        優先度<br>
+                        <input type="integer" name="priority" v-model="task.priority">
+                        <ul>
+                            <div v-for="error in errors.priority" :key="error.id">
+                                <li class="errorMessage">{{error}}</li>
+                            </div>
+                        </ul>
+
                         進捗度<br>
                         <input type="integer" name="progress" v-model="task.progress">
                         <ul>
@@ -103,6 +111,7 @@ export default {
                 task_name: [],
                 description: [],
                 work_user: [],
+                priority: [],
                 status: [],
                 category: [],
                 progress: [],
@@ -146,6 +155,7 @@ export default {
                     task_name: this.task.name,
                     description: this.task.description,
                     work_user: this.task.work_user.id,
+                    priority: this.task.priority,
                     status: this.task.status_id,
                     category: this.task.category_id,
                     deadline: this.task.deadline,
@@ -172,6 +182,7 @@ export default {
                 this.errors.task_name = [];
                 this.errors.description = [];
                 this.errors.work_user = [];
+                this.errors.priority = [];
                 this.errors.status = [];
                 this.errors.category = [];
                 this.errors.progress = [];
@@ -194,6 +205,12 @@ export default {
                 if(error.response.data.errors.work_user) {
                     const errorsWorkUser = error.response.data.errors.work_user;
                     this.errors.work_user = errorsWorkUser.map((error) => {
+                        return error
+                    })
+                }
+                if(error.response.data.errors.priority) {
+                    const errorsPriority = error.response.data.errors.priority;
+                    this.errors.priority = errorsPriority.map((error) => {
                         return error
                     })
                 }
