@@ -34,7 +34,7 @@
                         </ul>
 
                         優先度<br>
-                        <input type="integer" name="priority" v-model="task.priority">
+                        <input type="integer" name="priority" v-model="task.priority" placeholder="整数を入力してください">
                         <ul>
                             <div v-for="error in errors.priority" :key="error.id">
                                 <li class="errorMessage">{{error}}</li>

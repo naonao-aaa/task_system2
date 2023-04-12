@@ -31,6 +31,7 @@ class UpdateTaskForm extends FormRequest
             'progress' => 'integer|nullable|max:100',
             'man_hours' => 'integer|nullable',
             'work_user' => 'required|integer|exists:App\User,id',
+            'priority' => 'required|integer',
         ];
     }
 
@@ -44,6 +45,7 @@ class UpdateTaskForm extends FormRequest
             'progress' => '進捗度',
             'man_hours' => '工数',
             'work_user' => '担当者',
+            'priority' => '優先度',
         ];
     }
 }

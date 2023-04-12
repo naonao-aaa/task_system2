@@ -19,6 +19,7 @@ class TaskSeeder extends Seeder
                 'work_user' => 1,
                 'category_id' => 1,
                 'status_id' => 1,
+                'priority' => 5,
             ],
             [
                 'name' => 'Task2',
@@ -27,6 +28,7 @@ class TaskSeeder extends Seeder
                 'work_user' => 2,
                 'category_id' => 2,
                 'status_id' => 1,
+                'priority' => 10,
             ],
             [
                 'name' => 'Task3',
@@ -35,6 +37,7 @@ class TaskSeeder extends Seeder
                 'work_user' => 3,
                 'category_id' => 3,
                 'status_id' => 1,
+                'priority' => 10,
             ],
             [
                 'name' => 'Task4',
@@ -43,6 +46,7 @@ class TaskSeeder extends Seeder
                 'work_user' => 4,
                 'category_id' => 4,
                 'status_id' => 1,
+                'priority' => 10,
             ],
             [
                 'name' => 'Task5',
@@ -51,6 +55,7 @@ class TaskSeeder extends Seeder
                 'work_user' => 5,
                 'category_id' => 5,
                 'status_id' => 1,
+                'priority' => 10,
             ],
         ]);
     }
