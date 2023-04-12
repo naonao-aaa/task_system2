@@ -7,13 +7,14 @@
 
           <div class="card-body">
               カテゴリ名<br>
-              <input type="text" class="form-control" name="category_name" v-model="createCategoryData.category_name">
+              <input type="text" class="form-control" name="category_name" v-model="category_name">
               <br>
 
-              <div v-if="$v.category_name.$dirty">
+              <div>
                 <div class="error" v-if="!$v.category_name.required">カテゴリ名は必須入力です。</div>
               </div>
-       
+
+ {{$v.category_name}}
               <ul>
                   <div v-for="error in errors.category_name" :key="error.id">
                       <li class="errorMessage">{{error}}</li>
@@ -37,9 +38,12 @@ import { required } from 'vuelidate/lib/validators';
 export default {
     data() {
         return {
+/*             
             createCategoryData: {
-                category_name: '',
+
             },
+ */            
+            category_name: '',
             errors: {
                 category_name: [],
             }
@@ -57,7 +61,7 @@ export default {
             axios.post(
                 '/api/category/store',
                 {
-                    category_name: this.createCategoryData.category_name
+                    category_name: this.category_name
                 },
             )
             .then(response => {
@@ -76,16 +80,16 @@ export default {
                 }
             });
 
-            this.createCategoryData.category_name = '';
+            this.category_name = '';
         },
-
+/* 
         status(validation) {
             return {
                 error: validation.$error,
                 dirty: validation.$dirty
             }
         }
-     
+ */     
     },
 }
 </script>
