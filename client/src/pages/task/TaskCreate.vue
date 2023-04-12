@@ -36,6 +36,14 @@
                                     <li class="errorMessage">{{error}}</li>
                                 </div>
                             </ul>
+
+                            優先度<br>
+                            <input type="integer" name="priority" v-model="createTaskData.priority">
+                            <ul>
+                                <div v-for="error in errors.priority" :key="error.id">
+                                    <li class="errorMessage">{{error}}</li>
+                                </div>
+                            </ul>
                             
                             ステータス<br>
                             <select v-model="createTaskData.status">
@@ -89,6 +97,7 @@ export default {
                 task_name: '',
                 description: '',
                 work_user: '',
+                priority: '',
                 status: '',
                 category: '',
                 deadline: '',
@@ -99,6 +108,7 @@ export default {
                 task_name: [],
                 description: [],
                 work_user: [],
+                priority: [],
                 status: [],
                 category: [],
             }
@@ -131,6 +141,7 @@ export default {
                     task_name: this.createTaskData.task_name,
                     description: this.createTaskData.description,
                     work_user: this.createTaskData.work_user,
+                    priority: this.createTaskData.priority,
                     status: this.createTaskData.status,
                     category: this.createTaskData.category,
                     deadline: this.createTaskData.deadline,
@@ -155,6 +166,7 @@ export default {
                 this.errors.task_name = [];
                 this.errors.description = [];
                 this.errors.work_user = [];
+                this.errors.priority = [];
                 this.errors.status = [];
                 this.errors.category = [];
                 console.log(error.response.data.errors);
@@ -173,6 +185,12 @@ export default {
                 if(error.response.data.errors.work_user) {
                     const errorsWorkUser = error.response.data.errors.work_user;
                     this.errors.work_user = errorsWorkUser.map((error) => {
+                        return error
+                    })
+                }
+                if(error.response.data.errors.priority) {
+                    const errorsPriority = error.response.data.errors.priority;
+                    this.errors.priority = errorsPriority.map((error) => {
                         return error
                     })
                 }

@@ -8,20 +8,22 @@
                 新規登録
             </button>
 
-            <table class="table table-hover my-2">
+            <table id="sort_table" class="table table-hover my-2">
                 <thead>
                     <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">ステータス</th>
-                    <th scope="col">タスク名</th>
-                    <th scope="col">担当者</th>
-                    <th scope="col">締切日</th>
-                    <th scope="col">更新日時</th>
+                    <th @click="sortBy('id')" scope="col">id</th>
+                    <th @click="sortBy('priority')" scope="col">優先度</th>
+                    <th @click="sortBy('status')" scope="col">ステータス</th>
+                    <th @click="sortBy('name')" scope="col">タスク名</th>
+                    <th @click="sortBy('work_user')" scope="col">担当者</th>
+                    <th @click="sortBy('deadline')" scope="col">締切日</th>
+                    <th @click="sortBy('update_at')" scope="col">更新日時</th>
                     </tr>
                 </thead>
                 <tbody v-for="task in afterSliceComputedTasksForPaginate" :key="task.id">
                 <tr @click="goShow(task.id)">
                     <td>{{task.id}}</td>
+                    <td>{{task.priority}}</td>
                     <td>{{task.status ? task.status.name : ''}}</td>
                     <td>{{task.name}}</td>
                     <td>{{task.work_user ? task.work_user.name : ''}}</td>
@@ -61,6 +63,8 @@ export default {
         return {
             currentPage: 1,
             perPage: 10,
+            sort_key: "",
+            sort_asc: true
         };
     },
     computed: {
@@ -71,7 +75,24 @@ export default {
 
             if ((this.$route.query.category == 0 && this.$route.query.status == 0 && this.$route.query.user == 0 && this.$route.query.searchword == '') || (!this.$route.query.category && !this.$route.query.status && !this.$route.query.user && !this.$route.query.searchword)) {
                 //console.log(getters);
-                return getters;
+                //return getters;
+                if(this.sort_key != "") {
+                    let set = 1;
+                    this.sort_asc ? (set = 1) : (set = -1)
+                    getters.sort((a, b) => {
+                        if(this.sort_key == 'status' || this.sort_key == 'work_user'){
+                            if (a[this.sort_key].name < b[this.sort_key].name) return -1 * set;
+                            if (a[this.sort_key].name > b[this.sort_key].name) return 1 * set;
+                        } else {
+                            if (a[this.sort_key] < b[this.sort_key]) return -1 * set;
+                            if (a[this.sort_key] > b[this.sort_key]) return 1 * set;
+                        }
+                        return 0;
+                    })
+                    return getters
+                } else {
+                    return getters
+                }
             } else {
                 const categoryDataId = parseInt(this.$route.query.category, 10);
                 const statusDataId = parseInt(this.$route.query.status, 10);
@@ -88,13 +109,49 @@ export default {
                 if( searchword=='' || !searchword ) {
                     //console.log('searchwordなしの処理を通っている');
                     const finalData = tentativeData
-                    return finalData;
+
+                    if(this.sort_key != "") {
+                        let set = 1;
+                        this.sort_asc ? (set = 1) : (set = -1)
+                        finalData.sort((a, b) => {
+                            if(this.sort_key == 'status' || this.sort_key == 'work_user'){
+                                if (a[this.sort_key].name < b[this.sort_key].name) return -1 * set;
+                                if (a[this.sort_key].name > b[this.sort_key].name) return 1 * set;
+                            } else {
+                                if (a[this.sort_key] < b[this.sort_key]) return -1 * set;
+                                if (a[this.sort_key] > b[this.sort_key]) return 1 * set;
+                            }
+                            return 0;
+                        })
+                        return finalData
+                    } else {
+                        return finalData
+                    }
+
                 } else {
                     const finalData = tentativeData.filter( function(b) {
                         //console.log('searchwordありの処理を通っている');
                         return b.name.match(searchword);
                     })
-                    return finalData;
+
+                    if(this.sort_key != "") {
+                        let set = 1;
+                        this.sort_asc ? (set = 1) : (set = -1)
+                        finalData.sort((a, b) => {
+                            if(this.sort_key == 'status' || this.sort_key == 'work_user'){
+                                if (a[this.sort_key].name < b[this.sort_key].name) return -1 * set;
+                                if (a[this.sort_key].name > b[this.sort_key].name) return 1 * set;
+                            } else {
+                                if (a[this.sort_key] < b[this.sort_key]) return -1 * set;
+                                if (a[this.sort_key] > b[this.sort_key]) return 1 * set;
+                            }
+                            return 0;
+                        })
+                        return finalData
+                    } else {
+                        return finalData
+                    }
+
                 }
                 //console.log(finalData);
                 //return finalData;
@@ -130,7 +187,11 @@ export default {
         },
         clickCallback(pageNum) {
             this.currentPage = Number(pageNum);
-        }
+        },
+        sortBy(key) {
+            this.sort_key === key ? (this.sort_asc = !this.sort_asc) : (this.sort_asc = true)      
+            this.sort_key = key
+        },
     },
     filters: {
         moment: function (date) {
