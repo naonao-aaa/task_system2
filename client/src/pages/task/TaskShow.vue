@@ -14,6 +14,7 @@
                                 <thead>
                                     <tr class="table-active">
                                     <th scope="col">id</th>
+                                    <th scope="col">優先度</th>
                                     <th scope="col">ステータス</th>
                                     <th scope="col">担当者</th>
                                     <th scope="col">登録者</th>
@@ -27,6 +28,7 @@
                                 <tbody>
                                     <tr class="table-active">
                                     <td>{{task.id}}</td>
+                                    <td>{{task.priority}}</td>
                                     <td>{{task.status ? task.status.name : ''}}</td>
                                     <td>{{task.work_user ? task.work_user.name : ''}}</td>
                                     <td>{{task.admin_user ? task.admin_user.name : ''}}</td>
