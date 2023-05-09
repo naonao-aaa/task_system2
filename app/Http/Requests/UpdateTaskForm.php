@@ -31,7 +31,7 @@ class UpdateTaskForm extends FormRequest
             'progress' => 'integer|nullable|max:100',
             'man_hours' => 'integer|nullable',
             'work_user' => 'required|integer|exists:App\User,id',
-            'priority' => 'required|integer',
+            'priority' => 'required|integer|min:1',
         ];
     }
 

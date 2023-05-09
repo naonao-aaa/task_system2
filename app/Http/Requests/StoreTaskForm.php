@@ -29,7 +29,7 @@ class StoreTaskForm extends FormRequest
             'status' => 'required|integer|exists:App\Status,id',       //exitsはテーブル名よりもモデル名で指定する方が望ましい。
             'category' => 'required|integer|exists:App\Category,id',
             'work_user' => 'required|integer|exists:App\User,id',
-            'priority' => 'required|integer',
+            'priority' => 'required|integer|min:1',
         ];
     }
 
